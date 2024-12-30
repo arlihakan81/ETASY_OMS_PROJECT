@@ -124,26 +124,19 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-header">SİSTEM</li>
+                
                 @if(User.IsInRole("Admin"))
                 {
+                    <li class="nav-header">SİSTEM</li>
                     <li class="nav-item">
                         <a href="/User/Index" class="nav-link">
                             <i class="nav-icon far fa-user-circle"></i>
                             <p>
-                                Kullanıcı İşlemleri
+                                Kullanıcılar
                             </p>
                         </a>
                     </li>
-                }                
-                <li class="nav-item">
-                    <a href="pages/gallery.html" class="nav-link">
-                        <i class="fas fa-cog"></i>
-                        <p>
-                            Ayarlar
-                        </p>
-                    </a>
-                </li>
+                }
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

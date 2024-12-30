@@ -1,7 +1,7 @@
 ﻿@model Product
 
 @{
-	ViewData["title"] = "Yeni Ürün";
+    ViewData["title"] = "Ürün Güncelle";
 }
 
 <!-- Content Header (Page header) -->
@@ -12,14 +12,14 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/Home/Index">Anasayfa</a></li>
-                    <li class="breadcrumb-item active">Ürün Ekle</li>
+                    <li class="breadcrumb-item active">Ürün Güncelle</li>
                 </ol>
             </div>
         </div>
     </div><!-- /.container-fluid -->
 </section>
 
-<form action="/Product/Create" method="post">
+<form action="/Product/Update" method="post">
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -29,7 +29,7 @@
                     <!-- general form elements disabled -->
                     <div class="card card-warning">
                         <div class="card-header">
-                            <h3 class="card-title">Yeni Ürün Ekle</h3>
+                            <h3 class="card-title">Ürün Güncelle</h3>
                         </div>
                         @if (TempData["error"] is not null)
                         {
@@ -67,15 +67,16 @@
                                         <input asp-for="Scale" type="text" class="form-control" required />
                                     </div>
                                 </div>
+                                <input asp-for="CreatedAt" type="hidden" />
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-secondary">Kaydet</button>
+                                        <button type="submit" class="btn btn-secondary">Güncelle</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                 </div>
+                </div>
                 <div class="col-md-2"></div>
             </div>
         </div>

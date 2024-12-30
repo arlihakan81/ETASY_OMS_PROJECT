@@ -6,6 +6,7 @@
         User = 1,
         ExportUser = 2,
         DomesticUser = 3,
-        Admin = 4
+        Admin = 4,
+        Quality = 5
     }
 }

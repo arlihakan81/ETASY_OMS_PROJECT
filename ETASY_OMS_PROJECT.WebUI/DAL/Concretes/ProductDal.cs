@@ -17,13 +17,13 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
 
         public async Task<bool> CheckCodeAsync(string code)
         {
-            return await _context.Products.AnyAsync(_ => _.Code.ToLower() == code.ToLower());
+            return await _context.Products.AnyAsync(_ => _.Code == code);
         }
 
         public async Task<bool> CheckCodeAsync(int id, string code)
         {
             return await _context.Products.Where(_ => _.Id != id)
-                .AnyAsync(_ => _.Code.ToLower() == code.ToLower());
+                .AnyAsync(_ => _.Code == code);
         }
 
         public async Task<bool> CheckNameAsync(string name)
