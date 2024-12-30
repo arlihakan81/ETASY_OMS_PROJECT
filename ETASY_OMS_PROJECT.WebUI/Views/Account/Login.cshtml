@@ -1,0 +1,113 @@
+﻿@model LoginViewModel
+
+@{
+	ViewData["title"] = "Giriş Yap";
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["title"]</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="/Account/Login">
+                <img src="~/dist/img/logos/case_etasy_logo.png" class="img-thumbnail" />    
+            </a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Oturumunuzu başlatmak için giriş yapın.</p>
+                @if (TempData["error"] is not null)
+                {
+                    <div class="alert alert-danger">
+                        <i class="fas fa-close"></i>
+                        <span>@TempData["error"]</span>
+                    </div>
+                }
+                else if (TempData["success"] is not null)
+                {
+                    <div class="alert alert-success">
+                        <i class="fas fa-close"></i>
+                        <span>@TempData["success"]</span>
+                    </div>
+                }
+                <form action="/Account/Login" method="post">
+                    <div class="input-group mb-3">
+                        <input asp-for="Username" type="text" class="form-control" placeholder="Kullanıcı adınız" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input asp-for="Password" type="password" class="form-control" placeholder="Parolanız" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="remember">
+                                <label for="remember">
+                                    Beni Hatırla
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">@ViewData["title"]</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                <div class="social-auth-links text-center mb-3">
+                    <p>- VEYA -</p>
+                    <a href="" class="btn btn-block btn-primary">
+                        <i class="fab fa-facebook mr-2"></i> Facebook ile giriş yap
+                    </a>
+                    <a href="" class="btn btn-block btn-danger">
+                        <i class="fab fa-google-plus mr-2"></i> Google ile giriş yap
+                    </a>
+                </div>
+                <!-- /.social-auth-links -->
+
+                <p class="mb-1">
+                    <a href="/Account/Recover">Parolamı unuttum!</a>
+                </p>
+                <p class="mb-0">
+                    <a href="/Account/Register" class="text-center">yeni üyelik oluştur</a>
+                </p>
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+    <!-- /.login-box -->
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.min.js"></script>
+</body>
+</html>
+
