@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using ETASY_OMS_PROJECT.WebUI.Entity.Entities.Abstract;
 using ETASY_OMS_PROJECT.WebUI.Entity.Entities.Concrete;
 using ETASY_OMS_PROJECT.WebUI.Entity.Enums.User;
 

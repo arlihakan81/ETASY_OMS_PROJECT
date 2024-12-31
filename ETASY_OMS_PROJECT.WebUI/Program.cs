@@ -17,6 +17,9 @@ builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddScoped<IPasswordService, PasswordManager>();
 builder.Services.AddScoped<IAccountDal, AccountDal>();
 builder.Services.AddScoped<IProductDal, ProductDal>();
+builder.Services.AddScoped<ICustomerDal, CustomerDal>();
+builder.Services.AddScoped<IOrderDal, OrderDal>();
+builder.Services.AddScoped<IOrderDetailDal, OrderDetailDal>();
 
 builder.Services.AddScoped<IGenericRepository<EntityBase>, GenericRepository<EntityBase>>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

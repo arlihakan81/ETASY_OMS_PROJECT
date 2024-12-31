@@ -1,0 +1,157 @@
+﻿@model CreateOrderModel
+
+@{
+	ViewData["title"] = "Sipariş Ekle";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Home/Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item active">@ViewData["title"]</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Profile Image -->
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle"
+                                 src="~/dist/img/avatars/@User.FindFirstValue("Avatar")"
+                                 alt="User profile picture">
+                        </div>
+
+                        <h3 class="profile-username text-center">@User.Identity.Name</h3>
+                        @if(User.IsInRole("ExportUser"))
+                        {
+                            <p class="text-muted text-center">Yurtdışı Satış Koordinatörü</p>
+                        }
+                        else if (User.IsInRole("DomesticUser"))
+                        {
+                            <p class="text-muted text-center">Yurtiçi Satış Koordinatörü</p>
+                        }
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-md-8">
+                <div class="card card-default">
+                    <div class="card-header p-2">
+                        <h3 class="card-title">Yeni sipariş eklemek için gerekli bilgileri girin.</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div><!-- /.card-header -->
+                    @if (TempData["error"] is not null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-close"></i>
+                            <span>@TempData["error"]</span>
+                        </div>
+                    }
+                    else if (TempData["success"] is not null)
+                    {
+                        <div class="alert alert-success">
+                            <i class="fas fa-close"></i>
+                            <span>@TempData["success"]</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="active tab-pane" id="settings">
+                                <form class="form-horizontal" action="/Order/Create" method="post">
+                                    <div class="form-group row">
+                                        <label for="inputForm" class="col-sm-3 col-form-label">
+                                            Form Numarası 
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input asp-for="@Model.Order.FormId" type="number" class="form-control" id="inputForm" value="" required />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputSelect" class="col-sm-3 col-form-label">
+                                            Müşteri
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="@Model.Order.CustomerId" class="form-control" required>
+                                                @if(Model.Customers.Count > 0)
+                                                {
+                                                    <option value="">-----Müşteri Seçin-----</option>
+                                                    @foreach(var item in Model.Customers)
+                                                    {
+                                                        <option value="@item.Id">@item.Name</option>
+                                                    }
+                                                }
+                                                else {
+                                                    <option value="">-----Müşteri Yok-----</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputSelect2" class="col-sm-3 col-form-label">
+                                            Durumu
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="@Model.Order.Status" class="form-control" required>
+                                                <option value="">-----Durum Seçin-----</option>
+                                                <option value="0">İptal</option>
+                                                <option value="1">Onaylandı</option>
+                                                <option value="2">Hazır</option>
+                                                <option value="3">Sevk</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputDate" class="col-sm-3 col-form-label">
+                                            Termin Tarihi
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input asp-for="@Model.Order.DueDate" type="date" class="form-control" id="inputDate" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="offset-sm-2 col-sm-10">
+                                            <button type="submit" class="btn btn-secondary">Kaydet</button>
+                                            <a class="btn btn-warning" href="/Order/Index">İptal</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.tab-pane -->
+                        </div>
+                        <!-- /.tab-content -->
+                    </div><!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+

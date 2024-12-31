@@ -1,6 +1,6 @@
-﻿@model List<Product>
+﻿@model List<Customer>
 @{
-    ViewData["title"] = "Ürünlerimiz";
+    ViewData["title"] = "Müşterilerimiz";
 }
 
 <!-- Content Header (Page header) -->
@@ -22,62 +22,59 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">                
+            <div class="col-12">
                 <div class="card">
                     <div class="card-body">
                         <p>
-                            <a href="/Product/Create" class="btn btn-secondary">
+                            <a href="/Customer/Create" class="btn btn-secondary">
                                 <i class="fas fa-plus"></i>
                                 Yeni
                             </a>
                         </p>
-                        @if(Model.Count > 0)
+                        @if (Model.Count > 0)
                         {
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Ürün kodu</th>
-                                        <th>Ürün Adı</th>
-                                        <th>Ölçüsü</th>
+                                        <th>Müşteri Adı</th>
+                                        <th>Adresi</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach(var item in Model)
+                                    @foreach (var item in Model)
                                     {
                                         <tr>
-                                            <td>@item.Code</td>
                                             <td>@item.Name</td>
-                                            <td>@item.Scale</td>
+                                            <td>@item.Address</td>
                                             <td>
-                                                <a class="btn btn-warning" href="/Product/Update/@item.Id">
+                                                <a class="btn btn-warning" href="/Customer/Update/@item.Id">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a class="btn btn-danger" href="/Product/Delete/@item.Id">
+                                                <a class="btn btn-danger" href="/Customer/Delete/@item.Id">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
                                         </tr>
                                     }
-                                    
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Ürün kodu</th>
-                                        <th>Ürün Adı</th>
-                                        <th>Ölçüsü</th>
+                                        <th>Müşteri Adı</th>
+                                        <th>Adresi</th>
                                         <th></th>
                                     </tr>
                                 </tfoot>
                             </table>
                         }
-                        else {
+                        else
+                        {
                             <div class="alert alert-danger">
                                 <i class="fas fa-close"></i>
-                                <span>Henüz kayıtlı hiçbir ürününüz yok</span>
+                                <span>Henüz kayıtlı hiçbir müşteriniz yok</span>
                             </div>
                         }
-                        
+
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -90,4 +87,3 @@
     <!-- /.container-fluid -->
 </section>
 <!-- /.content -->
-

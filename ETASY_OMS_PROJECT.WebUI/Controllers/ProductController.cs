@@ -33,19 +33,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         {
             if(ModelState.IsValid)
             {
-                if(await _product.CheckNameAsync(model.Name))
+                if(!await _product.CheckNameAsync(model.Name))
                 {
-                    TempData["error"] = "Bu ürün adı kullanılıyor";
-                    return View(model);
-                }
-                else
-                {
-                    if(await _product.CheckCodeAsync(model.Code))
-                    {
-                        TempData["error"] = "Bu ürün kodu kullanılıyor";
-                        return View(model);
-                    }
-                    else
+                    if (!await _product.CheckCodeAsync(model.Code))
                     {
                         await _product.AddAsync(new Product
                         {
@@ -57,6 +47,17 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         TempData["success"] = "Yeni ürün başarılı bir şekilde eklendi";
                         return RedirectToAction("Create", "Product");
                     }
+                    else
+                    {
+                        TempData["error"] = "Bu ürün kodu kullanılıyor";
+                        return View(model);
+                        
+                    }
+                }
+                else
+                {
+                    TempData["error"] = "Bu ürün adı kullanılıyor";
+                    return View(model);
                 }
             }
             else
@@ -77,35 +78,19 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         {
             if(ModelState.IsValid)
             {
-                if(await _product.CheckNameAsync(id, model.Name))
-                {
-                    TempData["error"] = "Bu ürün adı kullanılıyor";
-                    return View(model);
-                }
-                else
-                {
-                    if(await _product.CheckCodeAsync(id, model.Code))
-                    {
-                        TempData["error"] = "Bu ürün kodu kullanılıyor";
-                        return View(model);
-                    }
-                    else
-                    {
-                        var user = _product.Get(id);
-                        user.Code = model.Code;
-                        user.Name = model.Name;
-                        user.Scale = model.Scale;
-                        user.CreatedAt = model.CreatedAt;
-                        user.UpdatedAt = DateTime.Now;
-                        await _product.UpdateAsync(user);
-                        TempData["success"] = "Ürün başarılı bir şekilde güncellendi";
-                        return RedirectToAction(nameof(Update));
-                    }
-                }
+                var product = _product.Get(id);
+                product.Name = model.Name;
+                product.Code = model.Code;
+                product.Scale = model.Scale;
+                product.CreatedAt = model.CreatedAt;
+                product.UpdatedAt = DateTime.Now;
+                await _product.UpdateAsync(product);
+                TempData["success"] = "Ürün başarılı bir şekilde güncellendi";
+                return RedirectToAction(nameof(Update));
             }
             else
             {
-                TempData["error"] = "Ürün güncellemek için bilgileri girin.";
+                TempData["error"] = "Ürün bilgilerini girin.";
                 return View(model);
             }
         }

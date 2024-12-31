@@ -27,12 +27,12 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Repos.Concrete
             await SaveAsync();
         }
 
-        public TEntity Get(int id)
+        public virtual TEntity Get(int id)
         {
             return _context.Set<TEntity>().Where(_ => _.Id == id).SingleOrDefault();
         }
 
-        public Task<List<TEntity>> GetAllAsync()
+        public virtual Task<List<TEntity>> GetAllAsync()
         {
             return _context.Set<TEntity>().ToListAsync();
         }

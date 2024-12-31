@@ -47,6 +47,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         claims.Add(new Claim("Avatar", user.Avatar));
                         claims.Add(new Claim(ClaimTypes.Name, user.Name));
                         claims.Add(new Claim("Department", user.Department.Name));
+                        claims.Add(new Claim("DepartmentId", user.DepartmentId.ToString()));
                         claims.Add(new Claim(ClaimTypes.Role, user.Role.ToString()));
 
                         ClaimsIdentity identity = new (claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -152,7 +153,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                     user.Password = model.Password;
                     user.Role = model.Role;
                     user.DepartmentId = model.DepartmentId;
-                    user.CreatedAt = model.CreatedAt;
+                    user.CreatedAt = user.CreatedAt;
                     user.UpdatedAt = DateTime.Now;
                     await _account.UpdateAsync(user);
                     TempData["success"] = "Hesabınız başarılı bir şekilde güncellendi";

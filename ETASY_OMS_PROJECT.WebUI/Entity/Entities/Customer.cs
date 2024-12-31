@@ -1,5 +1,4 @@
-﻿using ETASY_OMS_PROJECT.WebUI.Entity.Entities.Abstract;
-using ETASY_OMS_PROJECT.WebUI.Entity.Entities.Concrete;
+﻿using ETASY_OMS_PROJECT.WebUI.Entity.Entities.Concrete;
 
 namespace ETASY_OMS_PROJECT.WebUI.Entity.Entities
 {
