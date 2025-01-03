@@ -1,0 +1,152 @@
+﻿@model CreateOrderDetailModel
+
+@{
+	ViewData["title"] = "Sipariş Kaydı";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewData["title"]</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Home/Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item active">@ViewData["title"]</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Profile Image -->
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle"
+                                 src="~/dist/img/avatars/@User.FindFirstValue("Avatar")"
+                                 alt="User profile picture">
+                        </div>
+                        <h3 class="profile-username text-center">@User.Identity.Name</h3>
+                        @if(User.FindFirstValue(ClaimTypes.Role) == Role.ExportUser.ToString())
+                        {
+                            <p class="text-muted text-center">Yurtdışı Satış Koordinatörü</p>
+                        }
+                        else if (User.FindFirstValue(ClaimTypes.Role) == Role.DomesticUser.ToString())
+                        {
+                            <p class="text-muted text-center">Yurtiçi Satış Koordinatörü</p>
+                        }
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card card-warning">
+                    <div class="card-header">
+                        <h3 class="card-title">@ViewData["title"]</h3>
+                    </div>
+                    @if (TempData["error"] is not null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-close"></i>
+                            <span>@TempData["error"]</span>
+                        </div>
+                    }
+                    else if (TempData["success"] is not null)
+                    {
+                        <div class="alert alert-success">
+                            <i class="fas fa-close"></i>
+                            <span>@TempData["success"]</span>
+                        </div>
+                    }
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <form asp-action="Create" method="post">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label>Form Numarası</label>
+                                        <input asp-for="@Model.Order.FormId" type="number" class="form-control" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label>Müşteri Adı</label>
+                                        <input asp-for="@Model.Order.Customer.Name" type="text" class="form-control" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gx-3">
+                                <div class="col-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="orderTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Ürün Adı</th>
+                                                    <th>Miktarı</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if(Model.OrderDetails.Count > 0)
+                                                {
+                                                    foreach(var item in Model.OrderDetails)
+                                                    {
+                                                        <tr>
+                                                            <td>@item.Product.Name</td>
+                                                            <td>@item.Quantity</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                <tr>
+                                                    <td>
+                                                        <select asp-items="@Model.Products" asp-for="@Model.OrderDetail.ProductId" class="form-control" required>
+                                                            @if (Model.Products is not null)
+                                                            {
+                                                                <option value="">Lütfen ürün seçin</option>
+                                                                @foreach (var item in Model.Products)
+                                                                {
+                                                                    <option value="@item.Value">@item.Text</option>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="">Hiçbir ürün yok</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <div class="m-0">
+                                                            <input asp-for="@Model.OrderDetail.Quantity" type="number" class="form-control" value="" />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-secondary">Siparişi Kaydet</button>
+                                        <a class="btn btn-warning" href="/Order/Index">İptal</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+                

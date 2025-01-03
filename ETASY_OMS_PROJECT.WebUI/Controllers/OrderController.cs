@@ -23,13 +23,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             return View(await _order.GetAllAsync());
         }
 
-        [Authorize(Roles = "ExportUser,DomesticUser,Admin")]
+        [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpGet]
         public IActionResult Create()
         {
             return View(_order.GetCreateOrderModel());
         }
 
+        [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateOrderModel model)
         {
@@ -37,7 +38,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             {
                 if(!await _order.CheckFormIdAsync(model.Order.FormId))
                 {
-                    await _order.AddAsync(new Order
+                    var order = new Order
                     {
                         FormId = model.Order.FormId,
                         CustomerId = model.Order.CustomerId,
@@ -45,9 +46,10 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         Status = model.Order.Status,
                         DepartmentId = int.Parse(User.FindFirstValue("DepartmentId")),
                         CreatedAt = DateTime.Now
-                    });
-                    TempData["success"] = "Yeni sipariş başarılı bir şekilde eklendi";
-                    return RedirectToAction(nameof(Create));
+                    };
+                    await _order.AddAsync(order);
+                    TempData["success"] = "Yeni sipariş formu eklendi siparişi kaydetmek için lütfen ürün ve adetini girin.";
+                    return RedirectToAction("Create", "OrderDetail", new {order.Id});
                 }
                 else
                 {
@@ -62,12 +64,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             }
         }
 
+        [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpGet]
         public IActionResult Update(int id)
         {
             return View(_order.GetUpdateOrderModel(id));
         }
 
+        [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpPost]
         public async Task<IActionResult> Update(int id, UpdateOrderModel model)
         {
@@ -83,7 +87,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 ord.UpdatedAt = DateTime.Now;
                 await _order.UpdateAsync(ord);
                 TempData["success"] = "Sipariş başarılı bir şekilde güncellendi";
-                return RedirectToAction(nameof(Update));
+                return RedirectToAction("Update", "Order", new {id});
             }
             else
             {
@@ -98,6 +102,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             return View(_order.GetDetailOrderModel(id));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {

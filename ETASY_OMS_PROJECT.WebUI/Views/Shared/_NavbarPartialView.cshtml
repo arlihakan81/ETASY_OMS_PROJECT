@@ -41,12 +41,16 @@
                                 <p>Sipariş Listesi</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/Order/Create" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Yeni Sipariş Oluştur</p>
-                            </a>
-                        </li>                        
+                        @if(User.FindFirstValue(ClaimTypes.Role) == Role.ExportUser.ToString() 
+                            || User.FindFirstValue(ClaimTypes.Role) == Role.DomesticUser.ToString())
+                        {
+                            <li class="nav-item">
+                                <a href="/Order/Create" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Yeni Sipariş Oluştur</p>
+                                </a>
+                            </li>
+                        }                                               
                     </ul>
                 </li>
                 <li class="nav-item">
