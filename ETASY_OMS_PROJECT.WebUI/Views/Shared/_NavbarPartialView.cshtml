@@ -47,7 +47,7 @@
                             <li class="nav-item">
                                 <a href="/Order/Create" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Yeni Sipariş Oluştur</p>
+                                    <p>Yeni Sipariş</p>
                                 </a>
                             </li>
                         }                                               
@@ -55,31 +55,28 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <i class="nav-icon fas fa-building"></i>
                         <p>
-                            Analizler
-                            <i class="right fas fa-angle-left"></i>
+                            Departman İşlemleri
+                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/Analysis/AllOrders" class="nav-link">
+                            <a href="/Department/Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Gelen Siparişler</p>
+                                <p>Tüm Departmanlar</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/Analysis/DomesticDelivery" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Yurtiçi Sevk</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/Analysis/Export" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>İhracat</p>
-                            </a>
-                        </li>
+                        @if (User.FindFirstValue(ClaimTypes.Role) == Role.HumanResources.ToString())
+                        {
+                            <li class="nav-item">
+                                <a href="/Department/Create" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Yeni Departman</p>
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -94,15 +91,18 @@
                         <li class="nav-item">
                             <a href="/Product/Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Ürün Listesi</p>
+                                <p>Tüm Ürünler</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/Product/Create" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Yeni Ürün Oluştur</p>
-                            </a>
-                        </li>
+                        @if(User.FindFirstValue(ClaimTypes.Role) == Role.Quality.ToString())
+                        {
+                            <li class="nav-item">
+                                <a href="/Product/Create" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Yeni Ürün</p>
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -117,15 +117,19 @@
                         <li class="nav-item">
                             <a href="/Customer/Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Müşteriler Listesi</p>
+                                <p>Tüm Müşteriler</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/Customer/Create" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Yeni Müşteri Oluştur</p>
-                            </a>
-                        </li>
+                        @if (User.FindFirstValue(ClaimTypes.Role) == Role.ExportUser.ToString()
+                        || User.FindFirstValue(ClaimTypes.Role) == Role.DomesticUser.ToString())
+                        {
+                            <li class="nav-item">
+                                <a href="/Customer/Create" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Yeni Müşteri</p>
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </li>
                 

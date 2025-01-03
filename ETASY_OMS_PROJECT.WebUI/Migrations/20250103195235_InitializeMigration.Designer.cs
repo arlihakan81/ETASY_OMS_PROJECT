@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ETASY_OMS_PROJECT.WebUI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250103145851_CreateNotificationsTable")]
-    partial class CreateNotificationsTable
+    [Migration("20250103195235_InitializeMigration")]
+    partial class InitializeMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Operation")
                         .HasColumnType("int");

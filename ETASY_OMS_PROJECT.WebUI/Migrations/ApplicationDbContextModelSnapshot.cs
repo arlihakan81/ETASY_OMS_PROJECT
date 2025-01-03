@@ -83,6 +83,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Operation")
                         .HasColumnType("int");
 

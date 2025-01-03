@@ -1,8 +1,10 @@
 ﻿using ETASY_OMS_PROJECT.WebUI.DAL.Abstracts;
 using ETASY_OMS_PROJECT.WebUI.Entity.Entities;
+using ETASY_OMS_PROJECT.WebUI.Entity.Enums.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ETASY_OMS_PROJECT.WebUI.Controllers
 {
@@ -10,10 +12,12 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
     public class ProductController : Controller
     {
         private readonly IProductDal _product;
+        private readonly INotificationDal _notification;
 
-        public ProductController(IProductDal product)
+        public ProductController(IProductDal product, INotificationDal notification)
         {
             _product = product;
+            _notification = notification;
         }
 
         [HttpGet]
@@ -28,6 +32,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Quality")]
         [HttpPost]
         public async Task<IActionResult> Create(Product model)
         {
@@ -45,6 +50,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                             CreatedAt = DateTime.Now
                         });
                         TempData["success"] = "Yeni ürün başarılı bir şekilde eklendi";
+                        await _notification.AddAsync(new Notification
+                        {
+                            Operation = Operation.Product_Create,
+                            Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle yeni bir ürün kaydı ekledi.",
+                            UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                            IsRead = false,
+                            CreatedAt = DateTime.Now
+                        });
                         return RedirectToAction("Create", "Product");
                     }
                     else
@@ -67,12 +80,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             }
         }
 
+        [Authorize(Roles = "Quality")]
         [HttpGet]
         public IActionResult Update(int id)
         {
             return View(_product.Get(id));
         }
 
+        [Authorize(Roles = "Quality")]
         [HttpPost]
         public async Task<IActionResult> Update(int id, Product model)
         {
@@ -86,6 +101,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 product.UpdatedAt = DateTime.Now;
                 await _product.UpdateAsync(product);
                 TempData["success"] = "Ürün başarılı bir şekilde güncellendi";
+                await _notification.AddAsync(new Notification
+                {
+                    Operation = Operation.Product_Update,
+                    Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir ürün kaydını güncelledi.",
+                    UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                    IsRead = false,
+                    CreatedAt = DateTime.Now
+                });
                 return RedirectToAction(nameof(Update));
             }
             else
@@ -95,10 +118,19 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             }
         }
 
+        [Authorize(Roles = "Quality")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             await _product.DeleteAsync(id);
+            await _notification.AddAsync(new Notification
+            {
+                Operation = Operation.Product_Delete,
+                Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir sipariş kaydını sildi.",
+                UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                IsRead = false,
+                CreatedAt = DateTime.Now
+            });
             return RedirectToAction(nameof(Index));
         }
 

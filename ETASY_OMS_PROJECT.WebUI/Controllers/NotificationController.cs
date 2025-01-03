@@ -24,35 +24,23 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             return View(await _notification.GetAllAsync(id));
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Update(int id)
         {
-            return View();
+            var notify = _notification.Get(id);
+            notify.IsRead = true;
+            await _notification.UpdateAsync(notify);
+            return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public async Task<IActionResult> Create(Notification model)
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
-            if(ModelState.IsValid)
-            {
-                await _notification.AddAsync(new Notification
-                {
-                    Operation = model.Operation,
-                    Description = $"{User.Identity.Name} isimli kullanıcı şu işlemi yaptı: {model.Operation}",
-                    UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
-                    CreatedAt = DateTime.Now
-                });
-                TempData["success"] = "Yeni bildirim oluşturuldu";
-                return RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                TempData["error"] = "Gerekli bilgileri girin";
-                return View(model);
-            }
+            await _notification.DeleteAsync(id);
+            return RedirectToAction("Index");
         }
+
+
 
     }
 }

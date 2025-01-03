@@ -7,6 +7,7 @@
         ExportUser = 2,
         DomesticUser = 3,
         Admin = 4,
-        Quality = 5
+        Quality = 5,
+        HumanResources = 6
     }
 }

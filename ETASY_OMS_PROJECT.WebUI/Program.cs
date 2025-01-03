@@ -21,6 +21,7 @@ builder.Services.AddScoped<ICustomerDal, CustomerDal>();
 builder.Services.AddScoped<IOrderDal, OrderDal>();
 builder.Services.AddScoped<IOrderDetailDal, OrderDetailDal>();
 builder.Services.AddScoped<INotificationDal, NotificationDal>();
+builder.Services.AddScoped<IDepartmentDal, DepartmentDal>();
 
 builder.Services.AddScoped<IGenericRepository<EntityBase>, GenericRepository<EntityBase>>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
