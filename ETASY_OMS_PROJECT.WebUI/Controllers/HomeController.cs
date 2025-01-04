@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ETASY_OMS_PROJECT.WebUI.Entity.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using ETASY_OMS_PROJECT.WebUI.Entity.ViewModels.OrderVM;
+using System.Text.Json;
 namespace ETASY_OMS_PROJECT.WebUI.Controllers
 {
     [Authorize]
@@ -16,7 +18,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
 
         public IActionResult Index()
         {
-            var notify = _context.Notifications.ToList();
             return View(new IndexViewModel
             {
                 Users = _context.Users.Include(_ => _.Department).ToList(),
@@ -24,13 +25,8 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 Products = _context.Products.ToList(),
                 Customers = _context.Customers.ToList(),
                 Departments = _context.Departments.ToList(),
-                Notifications = _context.Notifications.ToList()
+                OrderDetails = _context.OrderDetails.Include(_ => _.Product).Include(_ => _.Order).ToList()               
             });
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
     }

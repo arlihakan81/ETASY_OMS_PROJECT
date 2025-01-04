@@ -61,37 +61,113 @@
         <!-- Main row -->
         <div class="row">
             <!-- Left col -->
-            <section class="col-lg-7 connectedSortable">
-                <!-- Custom tabs (Charts with tabs)-->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-chart-pie mr-1"></i>
-                            Satışlar
-                        </h3>
-                        <div class="card-tools">
-                            <ul class="nav nav-pills ml-auto">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="#sales-chart" data-toggle="tab">Donut</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div><!-- /.card-header -->
-                    <div class="card-body">
-                        <div class="tab-content p-0">
-                            <!-- Morris chart - Sales -->
-                            <div class="chart tab-pane active" id="sales-chart" style="position: relative; height: 300px;">
-                                <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
+            <section class="col-lg-12 connectedSortable">
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box bg-info">
+                            <span class="info-box-icon"><i class="fas fa-globe"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Dünya Geneli Sevkiyat</span>
+                                <span class="info-box-number">@Model.Orders.Where(_ => _.Status == Status.Delivered 
+                                    && _.Department.Name.ToLower() == "yurtdışı satış").Count()</span>
+                                @{
+                                    var prevMonthExportDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
+                                        && _.Department.Name.ToLower() == "yurtdışı satış" && _.DueDate.Month == DateTime.Now.Month - 1).Count();
+                                    var thisMonthExportDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
+                                        && _.Department.Name.ToLower() == "yurtdışı satış" && _.DueDate.Month == DateTime.Now.Month).Count();
+
+                                    var diff1 = thisMonthExportDeliveryCount - prevMonthExportDeliveryCount;
+                                    if (diff1 < 0)
+                                    {
+                                        var expDecrease = diff1 * prevMonthExportDeliveryCount / 100;
+                                        if(expDecrease > 0)
+                                        {
+                                            <span class="progress-description">
+                                                Son 1 Ayda %@expDecrease düşüş
+                                            </span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var expIncrease = diff1 * prevMonthExportDeliveryCount / 100;
+                                        if(expIncrease > 0)
+                                        {
+                                            <span class="progress-description">
+                                                Son 1 Ayda %@expIncrease artış
+                                            </span>
+                                        }
+                                    }
+                                }
                             </div>
-                            <div class="chart tab-pane" id="revenue-chart"
-                                 style="position: relative; height: 300px;">
-                                <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
-                            </div>
+                            <!-- /.info-box-content -->
                         </div>
-                    </div><!-- /.card-body -->
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box bg-success">
+                            <span class="info-box-icon"><i class="fas fa-home"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Ülke Geneli Sevkiyat</span>
+                                <span class="info-box-number">
+                                    @Model.Orders.Where(_ => _.Status == Status.Delivered
+                                             && _.Department.Name.ToLower() == "yurtiçi satış").Count()
+                                </span>
+                                @{
+                                    var prevMonthDomesticDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
+                                    && _.Department.Name.ToLower() == "yurtiçi satış" && _.DueDate.Month == DateTime.Now.Month - 1).Count();
+                                    var thisMonthDomesticDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
+                                    && _.Department.Name.ToLower() == "yurtiçi satış" && _.DueDate.Month == DateTime.Now.Month).Count();
+
+                                    var diff2 = thisMonthDomesticDeliveryCount - prevMonthDomesticDeliveryCount;
+                                    if (diff2 < 0)
+                                    {
+                                        var decrease = diff2 * prevMonthDomesticDeliveryCount / 100;
+                                        if (decrease > 0)
+                                        {
+                                            <div class="progress">
+                                                <div class="progress-bar" style="width: 70%"></div>
+                                            </div>
+                                            <span class="progress-description">
+                                                Son 1 Ayda %@decrease düşüş
+                                            </span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var increase = diff2 * prevMonthDomesticDeliveryCount / 100;
+                                        if (increase > 0)
+                                        {
+                                            <div class="progress">
+                                                <div class="progress-bar" style="width: 70%"></div>
+                                            </div>
+                                            <span class="progress-description">
+                                                Son 1 Ayda %@increase artış
+                                            </span>
+                                        }
+                                    }
+                                }
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="info-box bg-warning">
+                            <span class="info-box-icon"><i class="fas fa-tags"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Ürün</span>
+                                <span class="info-box-number">@Model.Products.Count()</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
                 </div>
-                <!-- /.card -->
-                
                 <!-- TO DO List -->
                 <div class="card">
                     <div class="card-header">
@@ -105,7 +181,7 @@
                         @if(Model.Orders.Where(_ => _.Status != Status.Delivered).Count() > 0)
                         {
                             <ul class="todo-list" data-widget="todo-list">
-                                @foreach(var item in Model.Orders.Where(_ => _.Status != Status.Delivered))
+                                @foreach(var item in Model.Orders.Where(_ => _.Status != Status.Delivered && _.Status != Status.Rejected))
                                 {
                                     <li>
                                         <!-- drag handle -->
@@ -114,7 +190,7 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </span>                                        
                                         <!-- todo text -->
-                                        <span class="text">@item.FormId @item.Customer.Name</span>
+                                        <span class="text">@item.FormId / @item.Customer.Name / @item.Customer.Address</span>
                                         <!-- Emphasis label -->
                                         @if(item.Status == Status.Prepared)
                                         {
@@ -130,7 +206,7 @@
                                         }
                                         <!-- General tools such as edit or delete-->
                                         <div class="tools">
-                                            <a href="/OrderDetail/Detail/@item.Id">
+                                            <a asp-controller="OrderDetail" asp-action="Detail" asp-route-id="@item.Id">
                                                 <i class="fas fa-info"></i>
                                             </a>
                                         </div>
@@ -153,119 +229,6 @@
                 </div>
                 <!-- /.card -->
             </section>
-            <!-- /.Left col -->
-            <!-- right col (We are only adding the ID to make the widgets sortable)-->
-            <section class="col-lg-5 connectedSortable">
-                <!-- Map card -->
-                <div class="card bg-gradient-primary">
-                    <div class="card-header border-0">
-                        <h3 class="card-title">
-                            <i class="fas fa-map-marker-alt mr-1"></i>
-                            Müşterilerimiz
-                        </h3>
-                        <!-- card tools -->
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                        <!-- /.card-tools -->
-                    </div>
-                    <div class="card-body">
-                        <div id="world-map" style="height: 250px; width: 100%;"></div>
-                    </div>
-                    <!-- /.card-body-->
-                    <div class="card-footer bg-transparent">
-                        <div class="row">
-                            <div class="col-4 text-center">
-                                <div id="sparkline-1"></div>
-                                <div class="text-white">Dünya Geneli</div>
-                            </div>
-                            <!-- ./col -->
-                            <div class="col-4 text-center">
-                                <div id="sparkline-2"></div>
-                                <div class="text-white">Ülke Geneli</div>
-                            </div>
-                            <!-- ./col -->
-                            <div class="col-4 text-center">
-                                <div id="sparkline-3"></div>
-                                <div class="text-white">Ortalama</div>
-                            </div>
-                            <!-- ./col -->
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                </div>
-                <!-- /.card -->
-                <!-- solid sales graph -->
-                <div class="card bg-gradient-info">
-                    <div class="card-header border-0">
-                        <h3 class="card-title">
-                            <i class="fas fa-th mr-1"></i>
-                            Satış Grafiği
-                        </h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer bg-transparent">
-                        <div class="row">
-                            <div class="col-6 text-center">
-                                <input type="text" class="knob" data-readonly="true" 
-                                       value="50" data-width="60" data-height="60"
-                                       data-fgColor="#39CCCC">
-                                <div class="text-white">Yurtiçi Satış</div>
-                            </div>
-                            <!-- ./col -->
-                            <div class="col-6 text-center">
-                                <input type="text" class="knob" data-readonly="true" 
-                                       value="100" data-width="60" data-height="60"
-                                       data-fgColor="#39CCCC">
-                                <div class="text-white">Yurtdışı Satış</div>
-                            </div>
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- /.card-footer -->
-                </div>
-                <!-- /.card -->
-                <!-- Calendar -->
-                <div class="card bg-gradient-success">
-                    <div class="card-header border-0">
-                        <h3 class="card-title">
-                            <i class="far fa-calendar-alt"></i>
-                            Takvim
-                        </h3>
-                        <!-- tools card -->
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-success btn-sm" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <!-- /. tools -->
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body pt-0">
-                        <!--The calendar -->
-                        <div id="calendar" style="width: 100%"></div>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-            </section>
-            <!-- right col -->
         </div>
         <!-- /.row (main row) -->
     </div><!-- /.container-fluid -->

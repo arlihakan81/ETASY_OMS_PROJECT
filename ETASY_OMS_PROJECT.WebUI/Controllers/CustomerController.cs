@@ -52,7 +52,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         Operation = Operation.Customer_Create,
                         Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle yeni müşteri ekledi.",
                         UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
-                        IsRead = false,
                         CreatedAt = DateTime.Now
                     });
 
@@ -97,7 +96,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         Operation = Operation.Customer_Update,
                         Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir müşteri kaydını güncelledi.",
                         UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
-                        IsRead = false,
                         CreatedAt = DateTime.Now
                     });
                     return RedirectToAction("Update", "Customer", new { id });
@@ -125,7 +123,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 Operation = Operation.Customer_Create,
                 Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir müşteri kaydını sildi.",
                 UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
-                IsRead = false,
                 CreatedAt = DateTime.Now
             });
             return RedirectToAction(nameof(Index));

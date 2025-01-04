@@ -1,6 +1,7 @@
 ﻿using ETASY_OMS_PROJECT.WebUI.DAL.Repos.Abstract;
 using ETASY_OMS_PROJECT.WebUI.Entity.Entities;
 using ETASY_OMS_PROJECT.WebUI.Entity.ViewModels;
+using ETASY_OMS_PROJECT.WebUI.Entity.ViewModels.AccountVM;
 
 namespace ETASY_OMS_PROJECT.WebUI.DAL.Abstracts
 {
@@ -10,5 +11,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Abstracts
         Task<bool> CheckUsernameAsync(int id, string Username);
         Task<User> CheckAccountAsync(LoginViewModel model);
         Task<bool> CheckResetAsync(int id, ResetViewModel model);
+        CreateAccountModel GetCreateAccountModel();
+        UpdateAccountModel GetUpdateAccountModel(int id);
     }
 }

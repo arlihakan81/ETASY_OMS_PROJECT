@@ -200,8 +200,8 @@ $(function () {
   var salesGraphChartCanvas = $('#line-chart').get(0).getContext('2d')
   // $('#revenue-chart').get(0).getContext('2d');
 
-  var salesGraphChartData = {
-      labels: ['2025 Q1', '2025 Q2', '2025 Q3', '2025 Q4'],
+    var salesGraphChartData = {
+        labels: ['2025 Q1', '2025 Q2', '2025 Q3', '2025 Q4'],
     datasets: [
       {
         label: 'Satislar',
@@ -215,7 +215,7 @@ $(function () {
         pointColor: '#efefef',
         pointBackgroundColor: '#efefef',
         data: [2666, 2778, 4912, 3767]
-      }
+      } 
     ]
   }
 

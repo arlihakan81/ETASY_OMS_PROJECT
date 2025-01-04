@@ -48,7 +48,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model)
+                                    @foreach (var item in Model.Where(_ => _.Status != Status.Delivered))
                                     {
                                         <tr>
                                             <td>@item.FormId</td>

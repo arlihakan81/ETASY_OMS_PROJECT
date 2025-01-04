@@ -1,0 +1,110 @@
+﻿@model UpdateAccountModel
+
+@{
+    ViewData["title"] = "Kullanıcı Güncelle";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item active">Kullanıcı Güncelle</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<form asp-action="Update" method="post" enctype="multipart/form-data">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <!-- general form elements disabled -->
+                    <div class="card card-warning">
+                        <div class="card-header">
+                            <h3 class="card-title">Kullanıcı Güncelle</h3>
+                        </div>
+                        @if (TempData["error"] is not null)
+                        {
+                            <div class="alert alert-danger">
+                                <i class="fas fa-close"></i>
+                                <span>@TempData["error"]</span>
+                            </div>
+                        }
+                        else if (TempData["success"] is not null)
+                        {
+                            <div class="alert alert-success">
+                                <i class="fas fa-close"></i>
+                                <span>@TempData["success"]</span>
+                            </div>
+                        }
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Kullanıcı Adı</label>
+                                        <input asp-for="@Model.User.Name" type="text" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Parola</label>
+                                        <input asp-for="@Model.User.Password" type="password" class="form-control" value="@Model.User.Password" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Rolü</label>
+                                        <select asp-for="@Model.User.Role" class="form-control" required>
+                                            <option value="@Role.User">Kullanıcı</option>
+                                            <option value="@Role.ExportUser">Kullanıcı(İhracat)</option>
+                                            <option value="@Role.DomesticUser">Kullanıcı(Yurtiçi Satış)</option>
+                                            <option value="@Role.Quality">Kullanıcı(Kalite-AR-GE)</option>
+                                            <option value="@Role.HumanResources">Kullanıcı(İK)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Departmanı</label>
+                                        <select asp-for="@Model.User.DepartmentId" class="form-control" required>
+                                            @if (Model.Departments.Count > 0)
+                                            {
+                                                foreach (var item in Model.Departments)
+                                                {
+                                                    <option value="@item.Id">@item.Name</option>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <option value="">Hiçbir departman yok!</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-secondary">Kaydet</button>
+                                        <a class="btn btn-warning" asp-action="Index">İptal</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </section>
+</form>
+
+
+

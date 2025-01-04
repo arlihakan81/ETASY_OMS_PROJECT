@@ -1,4 +1,5 @@
 ﻿using ETASY_OMS_PROJECT.WebUI.Entity.Entities;
+using ETASY_OMS_PROJECT.WebUI.Entity.ViewModels.OrderVM;
 
 namespace ETASY_OMS_PROJECT.WebUI.Entity.ViewModels
 {
@@ -9,7 +10,8 @@ namespace ETASY_OMS_PROJECT.WebUI.Entity.ViewModels
         public List<User> Users { get; set; }
         public List<Product> Products { get; set; }
         public List<Department> Departments { get; set; }
-
-        public List<Notification> Notifications { get; set; }
+        public List<OrderDetail> OrderDetails { get; set; }
+        public Export Export { get; set; }
+        public Domestic Domestic { get; set; }
     }
 }

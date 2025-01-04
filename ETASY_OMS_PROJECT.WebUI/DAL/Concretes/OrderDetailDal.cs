@@ -31,19 +31,19 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
 
         public CreateOrderDetailModel GetCreateOrderDetailModel(int orderId)
         {
-            var model = new CreateOrderDetailModel();
-            model.Order = _context.Orders.Include(_ => _.Customer).Include(_ => _.Department)
-                .FirstOrDefault(_ => _.Id == orderId);
-            model.Products = _context.Products.ToList();
-            model.OrderDetails = _context.OrderDetails.Include(_ => _.Product)
-                .Include(_ => _.Order).Where(_ => _.OrderId == orderId).ToList();
-            model.OrderDetail = new();
-            return model;
+            return new CreateOrderDetailModel
+            {
+                Order = _context.Orders.Include(_ => _.Customer).Include(_ => _.Department)
+                .FirstOrDefault(_ => _.Id == orderId),
+                Products = _context.Products.ToList(),
+                OrderDetails = _context.OrderDetails.Include(_ => _.Product)
+                    .Include(_ => _.Order).Where(_ => _.OrderId == orderId).ToList(),
+                OrderDetail = new()
+            };
         }
 
         public DetailOrderDetailModel GetDetailOrderDetailModel(int id)
         {
-            var model = new DetailOrderDetailModel();
             return new DetailOrderDetailModel
             {
                 OrderDetails = _context.OrderDetails.Include(_ => _.Product)
@@ -57,15 +57,16 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
 
         public UpdateOrderDetailModel GetUpdateOrderDetailModel(int id)
         {
-            var model = new UpdateOrderDetailModel();
-            model.Products = _context.Products.ToList();
-            model.Order = _context.Orders.Include(_ => _.Customer).Include(_ => _.Department)
-                .FirstOrDefault(_ => _.Id == id);
-            model.OrderDetails = _context.OrderDetails.Include(_ => _.Product)
-                .Include(_ => _.Order).Where(_ => _.Id == id).ToList();
-            model.OrderDetail = _context.OrderDetails.Include(_ => _.Product)
-                .Include(_ => _.Order).FirstOrDefault(_ => _.Id == id);
-            return model;
+            return new UpdateOrderDetailModel
+            {
+                Products = _context.Products.ToList(),
+                Order = _context.Orders.Include(_ => _.Customer).Include(_ => _.Department)
+                    .FirstOrDefault(_ => _.Id == id),
+                OrderDetails = _context.OrderDetails.Include(_ => _.Product)
+                    .Include(_ => _.Order).Where(_ => _.Id == id).ToList(),
+                OrderDetail = _context.OrderDetails.Include(_ => _.Product)
+                    .Include(_ => _.Order).FirstOrDefault(_ => _.Id == id)
+            };
         }
     }
 }

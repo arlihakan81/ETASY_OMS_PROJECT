@@ -30,19 +30,19 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>İşlem</th>
+                                        <th>Avatar</th>
                                         <th>İçerik</th>
-                                        <th>Zaman</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model.OrderByDescending(_ => _.CreatedAt))
+                                    @foreach (var item in Model)
                                     {
                                         <tr>
-                                            <td>@item.Operation.ToString()</td>
+                                            <td>
+                                                <img src="~/dist/img/avatars/@item.User.Avatar" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                            </td>
                                             <td>@item.Description</td>
-                                            <td>@item.CreatedAt</td>
                                             <td>
                                                 <a class="btn btn-warning" asp-action="Read" asp-route-id="@item.Id">
                                                     <i class="fas fa-book-reader"></i>
@@ -56,9 +56,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>İşlem</th>
+                                        <th>Avatar</th>
                                         <th>İçerik</th>
-                                        <th>Zaman</th>
                                         <th></th>
                                     </tr>
                                 </tfoot>

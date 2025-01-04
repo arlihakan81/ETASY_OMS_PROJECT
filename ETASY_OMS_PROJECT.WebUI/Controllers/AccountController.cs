@@ -63,7 +63,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                             Operation = Operation.Account_Login,
                             Description = $"{user.Name} isimli kullanıcı {DateTime.Now} itibariyle oturum açtı.",
                             UserId = user.Id,
-                            IsRead = false,
                             CreatedAt = DateTime.Now
                         });
 
@@ -98,10 +97,16 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 Operation = Operation.Account_Logout,
                 Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle oturumunu sonlandırdı.",
                 UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
-                IsRead = false,
                 CreatedAt = DateTime.Now
             });
             return RedirectToAction("Login", "Account");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Lock()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return View(_account.Get(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))));
         }
 
         [HttpGet]
@@ -134,7 +139,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         Operation = Operation.Account_Register,
                         Description = $"{user.Name} isimli kullanıcı {DateTime.Now} itibariyle yeni üyelik açtı.",
                         UserId = user.Id,
-                        IsRead = false,
                         CreatedAt = DateTime.Now
                     });
                     TempData["success"] = "Üyelik kaydınız başarılı bir şekilde oluşturuldu";
@@ -192,7 +196,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         Operation = Operation.Account_Register,
                         Description = $"{user.Name} isimli kullanıcı {DateTime.Now} itibariyle hesabını güncelledi.",
                         UserId = user.Id,
-                        IsRead = false,
                         CreatedAt = DateTime.Now
                     });
                     TempData["success"] = "Hesabınız başarılı bir şekilde güncellendi";
@@ -240,7 +243,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                             Operation = Operation.Account_Reset,
                             Description = $"{user.Name} isimli kullanıcı {DateTime.Now} itibariyle parolasını değiştirdi.",
                             UserId = user.Id,
-                            IsRead = false,
                             CreatedAt = DateTime.Now
                         });
                         return RedirectToAction(nameof(Reset));
@@ -273,7 +275,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 Operation = Operation.Access_Denied,
                 Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle erişim engeline takıldı.",
                 UserId = id,
-                IsRead = false,
                 CreatedAt = DateTime.Now
             });
             return View();
@@ -294,7 +295,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                     Operation = Operation.Account_Delete,
                     Description = $"{user.Name} isimli kullanıcı {DateTime.Now} itibariyle hesabını sildi.",
                     UserId = user.Id,
-                    IsRead = false,
                     CreatedAt = DateTime.Now
                 });
                 return RedirectToAction(nameof(Logout));
