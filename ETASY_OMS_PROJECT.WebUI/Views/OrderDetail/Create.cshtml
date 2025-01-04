@@ -12,7 +12,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/Home/Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
                     <li class="breadcrumb-item active">@ViewData["title"]</li>
                 </ol>
             </div>
@@ -107,13 +107,13 @@
                                                 }
                                                 <tr>
                                                     <td>
-                                                        <select asp-items="@Model.Products" asp-for="@Model.OrderDetail.ProductId" class="form-control" required>
+                                                        <select asp-for="@Model.OrderDetail.ProductId" class="form-control" required>
                                                             @if (Model.Products is not null)
                                                             {
                                                                 <option value="">Lütfen ürün seçin</option>
                                                                 @foreach (var item in Model.Products)
                                                                 {
-                                                                    <option value="@item.Value">@item.Text</option>
+                                                                    <option value="@item.Id">@item.Code @item.Name</option>
                                                                 }
                                                             }
                                                             else
@@ -135,7 +135,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-secondary">Siparişi Kaydet</button>
-                                        <a class="btn btn-warning" href="/Order/Index">İptal</a>
+                                        <a class="btn btn-warning" asp-controller="Order" asp-action="Index">İptal</a>
                                     </div>
                                 </div>
                             </div>

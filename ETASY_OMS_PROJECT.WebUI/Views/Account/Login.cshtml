@@ -24,7 +24,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="/Account/Login">
+            <a asp-action="Login">
                 <img src="~/dist/img/logos/case_etasy_logo.png" class="img-thumbnail" />    
             </a>
         </div>
@@ -46,7 +46,7 @@
                         <span>@TempData["success"]</span>
                     </div>
                 }
-                <form action="/Account/Login" method="post">
+                <form asp-action="Login" method="post">
                     <div class="input-group mb-3">
                         <input asp-for="Username" type="text" class="form-control" placeholder="Kullanıcı adınız" required>
                         <div class="input-group-append">
@@ -92,10 +92,10 @@
                 <!-- /.social-auth-links -->
 
                 <p class="mb-1">
-                    <a href="/Account/Recover">Parolamı unuttum!</a>
+                    <a asp-action="Recover">Parolamı unuttum!</a>
                 </p>
                 <p class="mb-0">
-                    <a href="/Account/Register" class="text-center">yeni üyelik oluştur</a>
+                    <a asp-action="Register" class="text-center">yeni üyelik oluştur</a>
                 </p>
             </div>
             <!-- /.login-card-body -->

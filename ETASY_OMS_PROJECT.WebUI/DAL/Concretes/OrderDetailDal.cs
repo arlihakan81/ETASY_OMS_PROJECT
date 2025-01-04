@@ -3,7 +3,6 @@ using ETASY_OMS_PROJECT.WebUI.DAL.Concretes.Data;
 using ETASY_OMS_PROJECT.WebUI.DAL.Repos.Concrete;
 using ETASY_OMS_PROJECT.WebUI.Entity.Entities;
 using ETASY_OMS_PROJECT.WebUI.Entity.ViewModels.OrderDetailVM;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
@@ -32,19 +31,10 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
 
         public CreateOrderDetailModel GetCreateOrderDetailModel(int orderId)
         {
-            List<SelectListItem> products = [];
-            foreach(var item in _context.Products)
-            {
-                products.Add(new SelectListItem
-                {
-                    Value = item.Id.ToString(),
-                    Text = item.Name
-                });
-            }
             var model = new CreateOrderDetailModel();
             model.Order = _context.Orders.Include(_ => _.Customer).Include(_ => _.Department)
                 .FirstOrDefault(_ => _.Id == orderId);
-            model.Products = products;
+            model.Products = _context.Products.ToList();
             model.OrderDetails = _context.OrderDetails.Include(_ => _.Product)
                 .Include(_ => _.Order).Where(_ => _.OrderId == orderId).ToList();
             model.OrderDetail = new();
@@ -67,17 +57,8 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
 
         public UpdateOrderDetailModel GetUpdateOrderDetailModel(int id)
         {
-            List<SelectListItem> products = [];
-            foreach(var item in _context.Products)
-            {
-                products.Add(new SelectListItem
-                {
-                    Value = item.Id.ToString(),
-                    Text = item.Name
-                });
-            }
             var model = new UpdateOrderDetailModel();
-            model.Products = products;
+            model.Products = _context.Products.ToList();
             model.Order = _context.Orders.Include(_ => _.Customer).Include(_ => _.Department)
                 .FirstOrDefault(_ => _.Id == id);
             model.OrderDetails = _context.OrderDetails.Include(_ => _.Product)

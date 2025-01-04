@@ -10,7 +10,7 @@
             <div class="col-sm-6"></div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/Home/Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
                     <li class="breadcrumb-item active">@ViewData["title"]</li>
                 </ol>
             </div>
@@ -29,7 +29,7 @@
                             @if (User.FindFirstValue(ClaimTypes.Role) == Role.ExportUser.ToString()
                             || User.FindFirstValue(ClaimTypes.Role) == Role.DomesticUser.ToString())
                             {
-                                <a href="/Order/Create" class="btn btn-secondary">
+                                <a asp-action="Create" class="btn btn-secondary">
                                     <i class="fas fa-plus"></i>
                                     Yeni
                                 </a>
@@ -59,22 +59,19 @@
                                                 @if(User.FindFirstValue(ClaimTypes.Role) == Role.ExportUser.ToString() 
                                                     || User.FindFirstValue(ClaimTypes.Role) == Role.DomesticUser.ToString())
                                                 {
-                                                    <a class="btn btn-success" href="/OrderDetail/Create/@item.Id">
+                                                    <a class="btn btn-success" asp-controller="OrderDetail" asp-action="Create" asp-route-id="@item.Id">
                                                         <i class="fas fa-plus"></i>
                                                     </a>
-                                                    <a class="btn btn-warning" href="/Order/Update/@item.Id">
+                                                    <a class="btn btn-warning" asp-action="Update" asp-route-id="@item.Id">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                }                                                                                                
-                                                <a class="btn btn-info" href="/OrderDetail/Detail/@item.Id">
-                                                    <i class="fas fa-info"></i>
-                                                </a>
-                                                @if(User.FindFirstValue(ClaimTypes.Role) == Role.Admin.ToString())
-                                                {
-                                                    <a class="btn btn-danger" href="/Order/Delete/@item.Id">
+                                                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
-                                                }                                                
+                                                }
+                                                <a class="btn btn-info" asp-controller="OrderDetail" asp-action="Detail" asp-route-id="@item.Id">
+                                                    <i class="fas fa-info"></i>
+                                                </a>                                                                                               
                                             </td>
                                         </tr>
                                     }
@@ -93,7 +90,7 @@
                         else
                         {
                             <div class="alert alert-danger">
-                                <i class="fas fa-close"></i>
+                                <i class="fas fa-exclamation-triangle"></i>
                                 <span>Henüz kayıtlı hiçbir siparişiniz yok</span>
                             </div>
                         }

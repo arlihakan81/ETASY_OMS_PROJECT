@@ -102,7 +102,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             return View(_order.GetDetailOrderModel(id));
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {

@@ -10,7 +10,7 @@
             <div class="col-sm-6"></div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/Home/Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
                     <li class="breadcrumb-item active">@ViewData["title"]</li>
                 </ol>
             </div>
@@ -28,7 +28,7 @@
                         @if (User.FindFirstValue(ClaimTypes.Role) == Role.HumanResources.ToString())
                         {
                             <p>
-                                <a href="/Notification/Create" class="btn btn-secondary">
+                                <a asp-action="Create" class="btn btn-secondary">
                                     <i class="fas fa-plus"></i>
                                     Yeni
                                 </a>
@@ -53,10 +53,10 @@
                                             <td>
                                                 @if (User.FindFirstValue(ClaimTypes.Role) == Role.HumanResources.ToString())
                                                 {
-                                                    <a class="btn btn-warning" href="/Department/Update/@item.Id">
+                                                    <a class="btn btn-warning" asp-action="Update" asp-route-id="@item.Id">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <a class="btn btn-danger" href="/Department/Delete/@item.Id">
+                                                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
                                                 }

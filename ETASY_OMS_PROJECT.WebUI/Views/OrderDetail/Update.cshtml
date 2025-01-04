@@ -12,7 +12,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/Home/Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
                     <li class="breadcrumb-item active">@ViewData["title"]</li>
                 </ol>
             </div>
@@ -107,7 +107,7 @@
                                                                         <option value="">Lütfen ürün seçin</option>
                                                                         @foreach (var item1 in Model.Products)
                                                                         {
-                                                                            <option value="@item1.Value">@item1.Text</option>
+                                                                            <option value="@item1.Id">@item1.Code @item1.Name</option>
                                                                         }
                                                                     }
                                                                     else
@@ -131,7 +131,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-secondary">Siparişi Güncelle</button>
-                                        <a class="btn btn-warning" href="/OrderDetail/Detail/@Model.OrderDetail.OrderId">İptal</a>
+                                        <a class="btn btn-warning" asp-controller="OrderDetail" asp-action="Detail" asp-route-id="@Model.OrderDetail.Id">İptal</a>
                                     </div>
                                 </div>
                             </div>

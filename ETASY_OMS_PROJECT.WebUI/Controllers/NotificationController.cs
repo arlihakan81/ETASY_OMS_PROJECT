@@ -1,7 +1,5 @@
 ﻿using System.Security.Claims;
 using ETASY_OMS_PROJECT.WebUI.DAL.Abstracts;
-using ETASY_OMS_PROJECT.WebUI.Entity.Enums.Notifications;
-using ETASY_OMS_PROJECT.WebUI.Entity.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -25,10 +23,10 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Update(int id)
+        public async Task<IActionResult> Read(int id)
         {
             var notify = _notification.Get(id);
-            notify.IsRead = true;
+            notify.ReaderId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             await _notification.UpdateAsync(notify);
             return RedirectToAction("Index");
         }

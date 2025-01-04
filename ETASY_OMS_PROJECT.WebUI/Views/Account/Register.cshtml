@@ -24,7 +24,7 @@
 <body class="hold-transition register-page">
     <div class="register-box">
         <div class="register-logo">
-            <a href="/Account/Register">
+            <a asp-action="Register">
                 <img src="~/dist/img/logos/case_etasy_logo.png" class="img-thumbnail" />
             </a>
         </div>
@@ -46,7 +46,7 @@
                         <span>@TempData["success"]</span>
                     </div>
                 }
-                <form action="/Account/Register" method="post">
+                <form asp-action="Register" method="post">
                     <div class="input-group mb-3">
                         <input asp-for="Username" type="text" class="form-control" placeholder="Kullanıcı adınız" required>
                         <div class="input-group-append">
@@ -100,7 +100,7 @@
                     </a>
                 </div>
 
-                <a href="/Account/Login" class="text-center">Zaten bir üyeliğim mevcut</a>
+                <a asp-action="Login" class="text-center">Zaten bir üyeliğim mevcut</a>
             </div>
             <!-- /.form-box -->
         </div><!-- /.card -->

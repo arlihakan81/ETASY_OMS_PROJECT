@@ -11,7 +11,57 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">                
-        
+        <!-- Messages Dropdown Menu -->
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i class="far fa-comments"></i>
+                <span class="badge badge-danger navbar-badge">@context.Notifications.Where(_ => _.ReaderId.ToString() != User.FindFirstValue(ClaimTypes.NameIdentifier)).Count()
+                </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                @if (context.Notifications.Where(_ => _.ReaderId != User.FindFirstValue(ClaimTypes.NameIdentifier).Count()) is not null)
+                {
+                    @if (context.Notifications.Any(_ => _.ReaderId.ToString() != User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                    {
+                        foreach (var item in context.Notifications.Where(_ => _.ReaderId.ToString() != User.FindFirstValue(ClaimTypes.NameIdentifier))
+                        .Take(5)
+                        .OrderByDescending(_ => _.CreatedAt))
+                        {
+                            <section class="dropdown-item">
+                                <!-- Message Start -->
+                                <div class="media">
+                                    <img src="~/dist/img/avatars/@item.User.Avatar" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                    <div class="media-body">
+                                        <h3 class="dropdown-item-title">
+                                            @item.User.Name
+                                            <span class="float-right text-sm text-danger">
+                                                <a asp-controller="Notification" asp-action="Read" asp-route-id="@item.Id">
+                                                    <i class="fas fa-book"></i>
+                                                </a>
+                                            </span>
+                                        </h3>
+                                        <p class="text-sm">@item.Description</p>
+                                        @{
+                                            var diff = DateTime.Now.Minute - item.CreatedAt.Minute;
+                                        }
+                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> @Math.Abs(diff) dakika önce</p>
+                                    </div>
+                                </div>
+                                <!-- Message End -->
+                            </section>
+                            <div class="dropdown-divider"></div>
+                        }
+                        <a asp-controller="Notification" asp-action="Index" class="dropdown-item dropdown-footer">Tüm Bildirimleri Gör</a>
+                    }
+                    else
+                    {
+                        <a class="dropdown-item">Okunmayan herhangi bir mesajınız yok!</a>
+                        <a asp-controller="Notification" asp-action="Index" class="dropdown-item dropdown-footer">Tüm Bildirimleri Gör</a>
+                    }
+                }
+                
+            </div>
+        </li>
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
@@ -23,11 +73,11 @@
             </a>
 
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/Account/Update">Hesap Ayarları</a>
-                <a class="dropdown-item" href="/Account/Reset">Parola Ayarları</a>
-                <a class="dropdown-item" href="/Account/Support">Yardım & Destek</a>
+                <a class="dropdown-item" asp-controller="Account" asp-action="Update">Hesap Ayarları</a>
+                <a class="dropdown-item" asp-controller="Account" asp-action="Reset">Parola Ayarları</a>
+                <a class="dropdown-item" asp-controller="Account" asp-action="Lock">Kilitle</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/Account/Logout">Çıkış Yap</a>
+                <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Çıkış Yap</a>
             </div>
         </li>
     </ul>

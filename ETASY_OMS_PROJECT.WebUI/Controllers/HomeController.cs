@@ -16,13 +16,15 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
 
         public IActionResult Index()
         {
+            var notify = _context.Notifications.ToList();
             return View(new IndexViewModel
             {
                 Users = _context.Users.Include(_ => _.Department).ToList(),
                 Orders = _context.Orders.Include(_ => _.Customer).Include(_ => _.Department).ToList(),
                 Products = _context.Products.ToList(),
                 Customers = _context.Customers.ToList(),
-                Departments = _context.Departments.ToList()
+                Departments = _context.Departments.ToList(),
+                Notifications = _context.Notifications.ToList()
             });
         }
 

@@ -10,7 +10,7 @@
             <div class="col-sm-6"></div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/Home/Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
                     <li class="breadcrumb-item active">@ViewData["title"]</li>
                 </ol>
             </div>
@@ -25,15 +25,6 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        @if(User.FindFirstValue(ClaimTypes.Role) == Role.Admin.ToString())
-                        {
-                            <p>
-                                <a href="/Notification/Create" class="btn btn-secondary">
-                                    <i class="fas fa-plus"></i>
-                                    Yeni
-                                </a>
-                            </p>
-                        }
                         @if (Model.Count > 0)
                         {
                             <table id="example1" class="table table-bordered table-striped">
@@ -46,17 +37,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model)
+                                    @foreach (var item in Model.OrderByDescending(_ => _.CreatedAt))
                                     {
                                         <tr>
                                             <td>@item.Operation.ToString()</td>
                                             <td>@item.Description</td>
                                             <td>@item.CreatedAt</td>
                                             <td>
-                                                <a class="btn btn-warning" href="/Notification/Update/@item.Id">
-                                                    <i class="fas fa-edit"></i>
+                                                <a class="btn btn-warning" asp-action="Read" asp-route-id="@item.Id">
+                                                    <i class="fas fa-book-reader"></i>
                                                 </a>
-                                                <a class="btn btn-danger" href="/Notification/Delete/@item.Id">
+                                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -76,7 +67,7 @@
                         else
                         {
                             <div class="alert alert-danger">
-                                <i class="fas fa-close"></i>
+                                <i class="fas fa-exclamation-triangle"></i>
                                 <span>Henüz kayıtlı hiçbir mesajınız yok</span>
                             </div>
                         }

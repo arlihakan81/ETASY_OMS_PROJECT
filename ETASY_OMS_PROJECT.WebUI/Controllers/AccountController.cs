@@ -19,6 +19,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         private readonly IPasswordService _service;
         private readonly IWebHostEnvironment _webHost;
         private readonly INotificationDal _notification;
+
         public AccountController(IAccountDal account, IPasswordService service, 
             IWebHostEnvironment webHost, INotificationDal notification)
         {

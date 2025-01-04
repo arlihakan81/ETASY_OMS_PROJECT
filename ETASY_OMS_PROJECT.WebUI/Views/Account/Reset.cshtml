@@ -12,7 +12,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/Home/Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
                     <li class="breadcrumb-item active">@ViewData["title"]</li>
                 </ol>
             </div>
@@ -44,10 +44,10 @@
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
-                                <a class="nav-link" href="/Account/Update">Hesap Ayarları</a>
+                                <a class="nav-link" asp-action="Update">Hesap Ayarları</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="/Account/Reset">@ViewData["title"]</a>
+                                <a class="nav-link active" asp-action="Reset">@ViewData["title"]</a>
                             </li>
                         </ul>
                     </div><!-- /.card-header -->
@@ -68,7 +68,7 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="active tab-pane" id="settings">
-                                <form class="form-horizontal" action="/Account/Reset" method="post">
+                                <form class="form-horizontal" asp-action="Reset" method="post">
                                     <div class="form-group row">
                                         <label for="inputName" class="col-sm-2 col-form-label">Şimdiki Parolanız</label>
                                         <div class="col-sm-10">
@@ -90,6 +90,7 @@
                                     <div class="form-group row">
                                         <div class="offset-sm-2 col-sm-10">
                                             <button type="submit" class="btn btn-success">Güncelle</button>
+                                            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">İptal</a>
                                         </div>
                                     </div>
                                 </form>

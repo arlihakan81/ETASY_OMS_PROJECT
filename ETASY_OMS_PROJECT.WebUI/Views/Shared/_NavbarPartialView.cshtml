@@ -9,7 +9,7 @@
                 <img src="~/dist/img/avatars/@User.FindFirstValue("Avatar")" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="/Account/Update" class="d-block">@User.Identity.Name</a>
+                <a asp-controller="Account" asp-action="Update" class="d-block">@User.Identity.Name</a>
             </div>
         </div>
 
@@ -19,7 +19,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                    <a href="/Home/Index" class="nav-link">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Anasayfa
@@ -36,16 +36,16 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/Order/Index" class="nav-link">
+                            <a asp-controller="Order" asp-action="Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Sipariş Listesi</p>
+                                <p>Tüm Siparişler</p>
                             </a>
                         </li>
                         @if(User.FindFirstValue(ClaimTypes.Role) == Role.ExportUser.ToString() 
                             || User.FindFirstValue(ClaimTypes.Role) == Role.DomesticUser.ToString())
                         {
                             <li class="nav-item">
-                                <a href="/Order/Create" class="nav-link">
+                                <a asp-controller="Order" asp-action="Create" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Yeni Sipariş</p>
                                 </a>
@@ -63,7 +63,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/Department/Index" class="nav-link">
+                            <a asp-controller="Department" asp-action="Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Tüm Departmanlar</p>
                             </a>
@@ -71,7 +71,7 @@
                         @if (User.FindFirstValue(ClaimTypes.Role) == Role.HumanResources.ToString())
                         {
                             <li class="nav-item">
-                                <a href="/Department/Create" class="nav-link">
+                                <a asp-controller="Department" asp-action="Create" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Yeni Departman</p>
                                 </a>
@@ -89,7 +89,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/Product/Index" class="nav-link">
+                            <a asp-controller="Product" asp-action="Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Tüm Ürünler</p>
                             </a>
@@ -97,7 +97,7 @@
                         @if(User.FindFirstValue(ClaimTypes.Role) == Role.Quality.ToString())
                         {
                             <li class="nav-item">
-                                <a href="/Product/Create" class="nav-link">
+                                <a asp-controller="Product" asp-action="Create" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Yeni Ürün</p>
                                 </a>
@@ -115,7 +115,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/Customer/Index" class="nav-link">
+                            <a asp-controller="Customer" asp-action="Index" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Tüm Müşteriler</p>
                             </a>
@@ -124,7 +124,7 @@
                         || User.FindFirstValue(ClaimTypes.Role) == Role.DomesticUser.ToString())
                         {
                             <li class="nav-item">
-                                <a href="/Customer/Create" class="nav-link">
+                                <a asp-controller="Customer" asp-action="Create" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Yeni Müşteri</p>
                                 </a>
@@ -137,7 +137,7 @@
                 {
                     <li class="nav-header">SİSTEM</li>
                     <li class="nav-item">
-                        <a href="/User/Index" class="nav-link">
+                        <a asp-controller="User" asp-action="Index" class="nav-link">
                             <i class="nav-icon far fa-user-circle"></i>
                             <p>
                                 Kullanıcılar

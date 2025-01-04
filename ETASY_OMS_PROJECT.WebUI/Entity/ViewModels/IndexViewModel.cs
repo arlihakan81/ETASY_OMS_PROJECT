@@ -9,5 +9,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Entity.ViewModels
         public List<User> Users { get; set; }
         public List<Product> Products { get; set; }
         public List<Department> Departments { get; set; }
+
+        public List<Notification> Notifications { get; set; }
     }
 }
