@@ -3,6 +3,7 @@ using ETASY_OMS_PROJECT.WebUI.Entity.Entities;
 using ETASY_OMS_PROJECT.WebUI.Entity.Enums.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 
 namespace ETASY_OMS_PROJECT.WebUI.Controllers
@@ -12,11 +13,15 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
     {
         private readonly ICustomerDal _customer;
         private readonly INotificationDal _notification;
+        private readonly INotifyUserDal _notifyUser;
+        private readonly IAccountDal _account;
 
-        public CustomerController(ICustomerDal customer, INotificationDal notification)
+        public CustomerController(ICustomerDal customer, INotificationDal notification, IAccountDal account, INotifyUserDal notifyUser)
         {
             _customer = customer;
             _notification = notification;
+            _account = account;
+            _notifyUser = notifyUser;
         }
 
         [HttpGet]
@@ -47,13 +52,25 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         CreatedAt = DateTime.Now
                     });
                     TempData["success"] = "Yeni müşteri başarılı bir şekilde eklendi";
-                    await _notification.AddAsync(new Notification
+                    var notification = new Notification
                     {
                         Operation = Operation.Customer_Create,
                         Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle yeni müşteri ekledi.",
                         UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                         CreatedAt = DateTime.Now
-                    });
+                    };
+                    await _notification.AddAsync(notification);
+
+                    foreach(var item in await _account.GetAllAsync())
+                    {
+                        await _notifyUser.AddAsync(new NotifyUser
+                        {
+                            UserId = item.Id,
+                            NotificationId = notification.Id,
+                            IsRead = false,
+                            CreatedAt = DateTime.Now
+                        });
+                    }
 
                     return RedirectToAction(nameof(Create));
                 }
@@ -90,14 +107,28 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                     customer.Address = model.Address;
                     customer.CreatedAt = customer.CreatedAt;
                     model.UpdatedAt = DateTime.Now;
+                    await _customer.UpdateAsync(customer);
                     TempData["success"] = "Müşteri bilgileri başarılı bir şekilde güncellendi";
-                    await _notification.AddAsync(new Notification
+                    var notification = new Notification
                     {
                         Operation = Operation.Customer_Update,
                         Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir müşteri kaydını güncelledi.",
                         UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                         CreatedAt = DateTime.Now
-                    });
+                    };
+                    await _notification.AddAsync(notification);
+
+                    foreach (var item in await _account.GetAllAsync())
+                    {
+                        await _notifyUser.AddAsync(new NotifyUser
+                        {
+                            UserId = item.Id,
+                            NotificationId = notification.Id,
+                            IsRead = false,
+                            CreatedAt = DateTime.Now
+                        });
+                    }
+
                     return RedirectToAction("Update", "Customer", new { id });
                 }
                 else
@@ -118,13 +149,26 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _customer.DeleteAsync(id);
-            await _notification.AddAsync(new Notification
+            var notification = new Notification
             {
                 Operation = Operation.Customer_Create,
                 Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir müşteri kaydını sildi.",
                 UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 CreatedAt = DateTime.Now
-            });
+            };
+            await _notification.AddAsync(notification);
+
+            foreach (var item in await _account.GetAllAsync())
+            {
+                await _notifyUser.AddAsync(new NotifyUser
+                {
+                    UserId = item.Id,
+                    NotificationId = notification.Id,
+                    IsRead = false,
+                    CreatedAt = DateTime.Now
+                });
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

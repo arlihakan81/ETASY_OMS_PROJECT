@@ -12,6 +12,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Entity.Entities
         public Role Role { get; set; }
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
+        public List<NotifyUser> NotifyUsers { get; set; }
 
         [NotMapped]
         public IFormFile Image { get; set; }

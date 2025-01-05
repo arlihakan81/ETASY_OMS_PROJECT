@@ -13,11 +13,15 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
     {
         private readonly IProductDal _product;
         private readonly INotificationDal _notification;
+        private readonly IAccountDal _account;
+        private readonly INotifyUserDal _notifyUser;
 
-        public ProductController(IProductDal product, INotificationDal notification)
+        public ProductController(IProductDal product, INotificationDal notification, IAccountDal account, INotifyUserDal notifyUser)
         {
             _product = product;
             _notification = notification;
+            _account = account;
+            _notifyUser = notifyUser;
         }
 
         [HttpGet]
@@ -50,13 +54,26 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                             CreatedAt = DateTime.Now
                         });
                         TempData["success"] = "Yeni ürün başarılı bir şekilde eklendi";
-                        await _notification.AddAsync(new Notification
+                        var notification = new Notification
                         {
                             Operation = Operation.Product_Create,
                             Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle yeni bir ürün kaydı ekledi.",
                             UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                             CreatedAt = DateTime.Now
-                        });
+                        };
+                        await _notification.AddAsync(notification);
+
+                        foreach (var item in await _account.GetAllAsync())
+                        {
+                            await _notifyUser.AddAsync(new NotifyUser
+                            {
+                                UserId = item.Id,
+                                NotificationId = notification.Id,
+                                IsRead = false,
+                                CreatedAt = DateTime.Now
+                            });
+                        }
+
                         return RedirectToAction("Create", "Product");
                     }
                     else
@@ -100,13 +117,26 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 product.UpdatedAt = DateTime.Now;
                 await _product.UpdateAsync(product);
                 TempData["success"] = "Ürün başarılı bir şekilde güncellendi";
-                await _notification.AddAsync(new Notification
+                var notification = new Notification
                 {
                     Operation = Operation.Product_Update,
                     Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir ürün kaydını güncelledi.",
                     UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                     CreatedAt = DateTime.Now
-                });
+                };
+                await _notification.AddAsync(notification);
+
+                foreach (var item in await _account.GetAllAsync())
+                {
+                    await _notifyUser.AddAsync(new NotifyUser
+                    {
+                        UserId = item.Id,
+                        NotificationId = notification.Id,
+                        IsRead = false,
+                        CreatedAt = DateTime.Now
+                    });
+                }
+
                 return RedirectToAction(nameof(Update));
             }
             else
@@ -121,13 +151,26 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _product.DeleteAsync(id);
-            await _notification.AddAsync(new Notification
+            var notification = new Notification
             {
                 Operation = Operation.Product_Delete,
                 Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir sipariş kaydını sildi.",
                 UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 CreatedAt = DateTime.Now
-            });
+            };
+            await _notification.AddAsync(notification);
+
+            foreach (var item in await _account.GetAllAsync())
+            {
+                await _notifyUser.AddAsync(new NotifyUser
+                {
+                    UserId = item.Id,
+                    NotificationId = notification.Id,
+                    IsRead = false,
+                    CreatedAt = DateTime.Now
+                });
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

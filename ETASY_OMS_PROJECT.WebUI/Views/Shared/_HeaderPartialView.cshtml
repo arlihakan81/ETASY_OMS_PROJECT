@@ -16,30 +16,31 @@
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-comments"></i>
-                <span class="badge badge-danger navbar-badge">@context.Notifications.Where(_ => _.ReaderId.ToString() != User.FindFirstValue(ClaimTypes.NameIdentifier)).Count()
+                <span class="badge badge-danger navbar-badge">@context.NotifyUsers.Include(_ => _.User).Include(_ => _.Notification).Where(_ => _.IsRead == false && _.User.Name == User.Identity.Name).Count()
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                @if (context.Notifications.Any(_ => _.ReaderId.ToString() != User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                @if (context.NotifyUsers.Any(_ => _.IsRead == false && _.User.Name == User.Identity.Name))
                 {
-                    foreach (var item in context.Notifications.Include(_ => _.User)
-                            .Where(_ => _.ReaderId.ToString() != User.FindFirstValue(ClaimTypes.NameIdentifier))
-                            .OrderByDescending(_ => _.CreatedAt).Take(3))
+                    foreach (var item in context.NotifyUsers.Include(_ => _.User)
+                        .Include(_ => _.Notification).ThenInclude(_ => _.User)
+                        .Where(_ => _.IsRead == false && _.User.Name == User.Identity.Name)
+                        .OrderByDescending(_ => _.CreatedAt).Take(4))
                     {
                         <section class="dropdown-item">
                             <!-- Message Start -->
                             <div class="media">
-                                <img src="~/dist/img/avatars/@item.User.Avatar" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                <img src="~/dist/img/avatars/@item.Notification.User.Avatar" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
-                                        @item.User.Name
+                                        @item.Notification.User.Name
                                         <span class="float-right text-sm text-danger">
-                                            <a asp-controller="Notification" asp-action="Read" asp-route-id="@item.Id">
+                                            <a asp-controller="NotifyUser" asp-action="Read" asp-route-id="@item.Id">
                                                 <i class="fas fa-book"></i>
                                             </a>
                                         </span>
                                     </h3>
-                                    <p class="text-sm">@item.Description</p>
+                                    <p class="text-sm">@item.Notification.Description</p>
                                     @{ var diff = DateTime.Now.Minute - item.CreatedAt.Minute; }
                                     @if(Math.Abs(diff) < 60)
                                     {

@@ -22,6 +22,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<NotifyUser> NotifyUsers { get; set; }
 
     }
 }

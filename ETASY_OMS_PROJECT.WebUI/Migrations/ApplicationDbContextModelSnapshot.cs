@@ -83,13 +83,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
                     b.Property<int>("Operation")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReaderId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -103,6 +97,38 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.NotifyUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("NotificationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NotificationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("NotifyUsers");
                 });
 
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Order", b =>
@@ -250,6 +276,25 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.NotifyUser", b =>
+                {
+                    b.HasOne("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Notification", "Notification")
+                        .WithMany("NotifyUsers")
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ETASY_OMS_PROJECT.WebUI.Entity.Entities.User", "User")
+                        .WithMany("NotifyUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Notification");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Order", b =>
                 {
                     b.HasOne("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Customer", "Customer")
@@ -297,6 +342,16 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                         .IsRequired();
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Notification", b =>
+                {
+                    b.Navigation("NotifyUsers");
+                });
+
+            modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.User", b =>
+                {
+                    b.Navigation("NotifyUsers");
                 });
 #pragma warning restore 612, 618
         }

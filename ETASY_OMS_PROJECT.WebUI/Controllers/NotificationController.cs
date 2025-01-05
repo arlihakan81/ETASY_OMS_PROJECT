@@ -9,7 +9,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
     public class NotificationController : Controller
     {
         private readonly INotificationDal _notification;
-
+         
         public NotificationController(INotificationDal notification)
         {
             _notification = notification;
@@ -20,15 +20,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         {
             id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             return View(await _notification.GetAllAsync(id));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Read(int id)
-        {
-            var notify = _notification.Get(id);
-            notify.ReaderId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            await _notification.UpdateAsync(notify);
-            return RedirectToAction("Index");
         }
 
         [HttpGet]

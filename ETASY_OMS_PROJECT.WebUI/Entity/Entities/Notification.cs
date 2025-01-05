@@ -7,8 +7,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Entity.Entities
     {
         public Operation Operation { get; set; }
         public string Description { get; set; }
-        public int ReaderId { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
+        
+        public List<NotifyUser> NotifyUsers { get; set; }
     }
 }

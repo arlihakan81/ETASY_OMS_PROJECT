@@ -19,14 +19,16 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         private readonly IPasswordService _service;
         private readonly IWebHostEnvironment _webHost;
         private readonly INotificationDal _notification;
+        private readonly INotifyUserDal _notifyUser;
 
         public AccountController(IAccountDal account, IPasswordService service, 
-            IWebHostEnvironment webHost, INotificationDal notification)
+            IWebHostEnvironment webHost, INotificationDal notification, INotifyUserDal notifyUser)
         {
             _account = account;
             _service = service;
             _webHost = webHost;
             _notification = notification;
+            _notifyUser = notifyUser;
         }
 
         [HttpGet]
@@ -58,13 +60,26 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         ClaimsIdentity identity = new (claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         ClaimsPrincipal principal = new (identity);
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                        await _notification.AddAsync(new Notification
+
+                        var notification = new Notification
                         {
                             Operation = Operation.Account_Login,
                             Description = $"{user.Name} isimli kullanıcı {DateTime.Now} itibariyle oturum açtı.",
                             UserId = user.Id,
                             CreatedAt = DateTime.Now
-                        });
+                        };
+                        await _notification.AddAsync(notification);
+
+                        foreach(var item in await _account.GetAllAsync())
+                        {
+                            await _notifyUser.AddAsync(new NotifyUser
+                            {
+                                UserId = item.Id,
+                                NotificationId = notification.Id,
+                                IsRead = false,
+                                CreatedAt = DateTime.Now
+                            });
+                        }
 
                         return RedirectToAction("Index", "Home");
                     }
@@ -91,22 +106,27 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            TempData["success"] = "Oturumunuz başarılı bir şekilde sonlandırıldı";
-            await _notification.AddAsync(new Notification
+            var notification = new Notification
             {
                 Operation = Operation.Account_Logout,
                 Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle oturumunu sonlandırdı.",
                 UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 CreatedAt = DateTime.Now
-            });
-            return RedirectToAction("Login", "Account");
-        }
+            };
+            await _notification.AddAsync(notification);
 
-        [HttpGet]
-        public async Task<IActionResult> Lock()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return View(_account.Get(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))));
+            foreach (var item in await _account.GetAllAsync())
+            {
+                await _notifyUser.AddAsync(new NotifyUser
+                {
+                    UserId = item.Id,
+                    NotificationId = notification.Id,
+                    IsRead = false,
+                    CreatedAt = DateTime.Now
+                });
+            }
+            TempData["success"] = "Oturumunuz başarılı bir şekilde sonlandırıldı";
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpGet]
@@ -134,13 +154,26 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         CreatedAt = DateTime.Now
                     };
                     await _account.AddAsync(user);
-                    await _notification.AddAsync(new Notification
+
+                    var notification = new Notification
                     {
                         Operation = Operation.Account_Register,
                         Description = $"{user.Name} isimli kullanıcı {DateTime.Now} itibariyle yeni üyelik açtı.",
                         UserId = user.Id,
                         CreatedAt = DateTime.Now
-                    });
+                    };
+                    await _notification.AddAsync(notification);
+
+                    foreach (var item in await _account.GetAllAsync())
+                    {
+                        await _notifyUser.AddAsync(new NotifyUser
+                        {
+                            UserId = item.Id,
+                            NotificationId = notification.Id,
+                            IsRead = false,
+                            CreatedAt = DateTime.Now
+                        });
+                    }
                     TempData["success"] = "Üyelik kaydınız başarılı bir şekilde oluşturuldu";
                     return RedirectToAction(nameof(Register));
                 }
@@ -191,13 +224,26 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                     user.CreatedAt = user.CreatedAt;
                     user.UpdatedAt = DateTime.Now;
                     await _account.UpdateAsync(user);
-                    await _notification.AddAsync(new Notification
+                    var notification = new Notification
                     {
                         Operation = Operation.Account_Register,
                         Description = $"{user.Name} isimli kullanıcı {DateTime.Now} itibariyle hesabını güncelledi.",
                         UserId = user.Id,
                         CreatedAt = DateTime.Now
-                    });
+                    };
+                    await _notification.AddAsync(notification);
+
+                    foreach (var item in await _account.GetAllAsync())
+                    {
+                        await _notifyUser.AddAsync(new NotifyUser
+                        {
+                            UserId = item.Id,
+                            NotificationId = notification.Id,
+                            IsRead = false,
+                            CreatedAt = DateTime.Now
+                        });
+                    }
+
                     TempData["success"] = "Hesabınız başarılı bir şekilde güncellendi";
                     return RedirectToAction(nameof(Update));
                 }
@@ -238,13 +284,26 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         user.Password = _service.HashPassword(model.NewPassword);
                         await _account.UpdateAsync(user);
                         TempData["success"] = "Parolanız başarılı bir şekilde güncellendi";
-                        await _notification.AddAsync(new Notification
+                        var notification = new Notification
                         {
                             Operation = Operation.Account_Reset,
                             Description = $"{user.Name} isimli kullanıcı {DateTime.Now} itibariyle parolasını değiştirdi.",
                             UserId = user.Id,
                             CreatedAt = DateTime.Now
-                        });
+                        };
+                        await _notification.AddAsync(notification);
+
+                        foreach (var item in await _account.GetAllAsync())
+                        {
+                            await _notifyUser.AddAsync(new NotifyUser
+                            {
+                                UserId = item.Id,
+                                NotificationId = notification.Id,
+                                IsRead = false,
+                                CreatedAt = DateTime.Now
+                            });
+                        }
+
                         return RedirectToAction(nameof(Reset));
                     }
                     else 
@@ -270,13 +329,26 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         public async Task<IActionResult> AccessDenied()
         {
             int id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            await _notification.AddAsync(new Notification
+            var notification = new Notification
             {
                 Operation = Operation.Access_Denied,
                 Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle erişim engeline takıldı.",
                 UserId = id,
                 CreatedAt = DateTime.Now
-            });
+            };
+            await _notification.AddAsync(notification);
+
+            foreach (var item in await _account.GetAllAsync())
+            {
+                await _notifyUser.AddAsync(new NotifyUser
+                {
+                    UserId = item.Id,
+                    NotificationId = notification.Id,
+                    IsRead = false,
+                    CreatedAt = DateTime.Now
+                });
+            }
+
             return View();
         }
 
@@ -290,13 +362,26 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             {
                 await _account.DeleteAsync(id);
                 TempData["success"] = "Hesabınız başarılı bir şekilde silindi";
-                await _notification.AddAsync(new Notification
+                var notification = new Notification
                 {
                     Operation = Operation.Account_Delete,
                     Description = $"{user.Name} isimli kullanıcı {DateTime.Now} itibariyle hesabını sildi.",
                     UserId = user.Id,
                     CreatedAt = DateTime.Now
-                });
+                };
+                await _notification.AddAsync(notification);
+
+                foreach (var item in await _account.GetAllAsync())
+                {
+                    await _notifyUser.AddAsync(new NotifyUser
+                    {
+                        UserId = item.Id,
+                        NotificationId = notification.Id,
+                        IsRead = false,
+                        CreatedAt = DateTime.Now
+                    });
+                }
+
                 return RedirectToAction(nameof(Logout));
             }
             else

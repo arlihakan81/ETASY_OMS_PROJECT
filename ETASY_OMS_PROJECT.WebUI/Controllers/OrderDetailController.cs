@@ -5,6 +5,7 @@ using ETASY_OMS_PROJECT.WebUI.Entity.Enums.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ETASY_OMS_PROJECT.WebUI.Controllers
 {
@@ -13,10 +14,15 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
     {
         private readonly IOrderDetailDal _detail;
         private readonly INotificationDal _notification;
-        public OrderDetailController(IOrderDetailDal detail, INotificationDal notification) 
+        private readonly IAccountDal _account;
+        private readonly INotifyUserDal _notifyUser;
+
+        public OrderDetailController(IOrderDetailDal detail, INotificationDal notification, IAccountDal account, INotifyUserDal notifyUser) 
         {
             _detail = detail;
             _notification = notification;
+            _account = account;
+            _notifyUser = notifyUser;
         }
 
         [Authorize(Roles = "ExportUser,DomesticUser")]
@@ -40,13 +46,26 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                     CreatedAt = DateTime.Now
                 });
                 TempData["success"] = $"{model.Order.FormId} No'lu Siparişinize yeni bir ürün eklendi.";
-                await _notification.AddAsync(new Notification
+                var notification = new Notification
                 {
                     Operation = Operation.Order_Create,
                     Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle yeni bir sipariş kaydı ekledi.",
                     UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                     CreatedAt = DateTime.Now
-                });
+                };
+                await _notification.AddAsync(notification);
+
+                foreach (var item in await _account.GetAllAsync())
+                {
+                    await _notifyUser.AddAsync(new NotifyUser
+                    {
+                        UserId = item.Id,
+                        NotificationId = notification.Id,
+                        IsRead = false,
+                        CreatedAt = DateTime.Now
+                    });
+                }
+
                 return RedirectToAction("Create", "OrderDetail", new { model.OrderDetail.OrderId });
             }
             else
@@ -69,21 +88,33 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _detail.AddAsync(new OrderDetail
-                {
-                    OrderId = id,
-                    ProductId = model.OrderDetail.ProductId,
-                    Quantity = model.OrderDetail.Quantity,
-                    CreatedAt = DateTime.Now
-                });
-                TempData["success"] = $"{model.Order.FormId} No'lu Siparişinize yeni bir ürün eklendi.";
-                await _notification.AddAsync(new Notification
+                var detail = _detail.Get(id);
+                detail.OrderId = id;
+                detail.ProductId = model.OrderDetail.ProductId;
+                detail.Quantity = model.OrderDetail.Quantity;
+                detail.CreatedAt = DateTime.Now;
+                await _detail.UpdateAsync(detail);
+                TempData["success"] = $"{model.Order.FormId} No'lu Siparişinizdeki bir ürün güncellendi.";
+                var notification = new Notification
                 {
                     Operation = Operation.Order_Update,
                     Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir sipariş kaydını güncelledi.",
                     UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                     CreatedAt = DateTime.Now
-                });
+                };
+                await _notification.AddAsync(notification);
+
+                foreach (var item in await _account.GetAllAsync())
+                {
+                    await _notifyUser.AddAsync(new NotifyUser
+                    {
+                        UserId = item.Id,
+                        NotificationId = notification.Id,
+                        IsRead = false,
+                        CreatedAt = DateTime.Now
+                    });
+                }
+
                 return RedirectToAction("Create", "OrderDetail", new { model.OrderDetail.OrderId });
             }
             else
@@ -104,13 +135,27 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _detail.DeleteAsync(id);
-            await _notification.AddAsync(new Notification
+            var notification = new Notification
             {
                 Operation = Operation.Order_Delete,
                 Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir sipariş kaydını sildi.",
                 UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 CreatedAt = DateTime.Now
-            });
+            };
+
+            await _notification.AddAsync(notification);
+
+            foreach (var item in await _account.GetAllAsync())
+            {
+                await _notifyUser.AddAsync(new NotifyUser
+                {
+                    UserId = item.Id,
+                    NotificationId = notification.Id,
+                    IsRead = false,
+                    CreatedAt = DateTime.Now
+                });
+            }
+
             return RedirectToAction("Detail", "OrderDetail");
         }
 
