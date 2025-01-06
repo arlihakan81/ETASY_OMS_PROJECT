@@ -83,6 +83,7 @@
                                         <input asp-for="@Model.Order.Customer.Name" type="text" class="form-control" readonly />
                                     </div>
                                 </div>
+                                <input asp-for="@Model.OrderDetail.OrderId" type="hidden" />
                             </div>
                             <div class="row gx-3">
                                 <div class="col-12">
@@ -97,32 +98,29 @@
                                             <tbody>
                                                 @if (Model.OrderDetails.Count > 0)
                                                 {
-                                                    foreach (var item in Model.OrderDetails)
-                                                    {
-                                                        <tr>
-                                                            <td>
-                                                                <select asp-for="@Model.OrderDetail.ProductId" class="form-control" required>
-                                                                    @if (Model.Products is not null)
+                                                    <tr>
+                                                        <td>
+                                                            <select asp-for="@Model.OrderDetail.ProductId" class="form-control" required>
+                                                                @if (Model.Products is not null)
+                                                                {
+                                                                    <option value="">Lütfen ürün seçin</option>
+                                                                    @foreach (var item1 in Model.Products)
                                                                     {
-                                                                        <option value="">Lütfen ürün seçin</option>
-                                                                        @foreach (var item1 in Model.Products)
-                                                                        {
-                                                                            <option value="@item1.Id">@item1.Code @item1.Name</option>
-                                                                        }
+                                                                        <option value="@item1.Id">@item1.Code @item1.Name</option>
                                                                     }
-                                                                    else
-                                                                    {
-                                                                        <option value="">Hiçbir ürün yok</option>
-                                                                    }
-                                                                </select>
-                                                            </td>
-                                                            <td>
-                                                                <div class="m-0">
-                                                                    <input asp-for="@Model.OrderDetail.Quantity" type="number" class="form-control" />
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="">Hiçbir ürün yok</option>
+                                                                }
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <div class="m-0">
+                                                                <input asp-for="@Model.OrderDetail.Quantity" type="number" class="form-control" />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                 }
                                                 else
                                                 {
@@ -138,7 +136,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-secondary">Siparişi Güncelle</button>
-                                        <a class="btn btn-warning" asp-controller="OrderDetail" asp-action="Detail" asp-route-id="@Model.OrderDetail.Id">İptal</a>
+                                        <a class="btn btn-warning" asp-controller="OrderDetail" asp-action="Detail" asp-route-id="@Model.Order.Id">İptal</a>
                                     </div>
                                 </div>
                             </div>

@@ -12,5 +12,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Entity.Entities
         public DateOnly DueDate { get; set; }
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
+        public OrderDetail OrderDetail { get; set; }
     }
 }

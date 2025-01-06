@@ -89,10 +89,11 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             if (ModelState.IsValid)
             {
                 var detail = _detail.Get(id);
-                detail.OrderId = id;
+                detail.OrderId = model.OrderDetail.OrderId;
                 detail.ProductId = model.OrderDetail.ProductId;
                 detail.Quantity = model.OrderDetail.Quantity;
-                detail.CreatedAt = DateTime.Now;
+                detail.CreatedAt = model.OrderDetail.CreatedAt;
+                detail.UpdatedAt = DateTime.Now;
                 await _detail.UpdateAsync(detail);
                 TempData["success"] = $"{model.Order.FormId} No'lu Siparişinizdeki bir ürün güncellendi.";
                 var notification = new Notification
@@ -115,7 +116,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                     });
                 }
 
-                return RedirectToAction("Create", "OrderDetail", new { model.OrderDetail.OrderId });
+                return RedirectToAction("Update", "OrderDetail", new { model.OrderDetail.Id });
             }
             else
             {
@@ -125,14 +126,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detail(int id)
+        public IActionResult Detail(int id) // Order.Id
         {
             return View(_detail.GetDetailOrderDetailModel(id));
         }
 
         [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id) // OrderDetail.Id
         {
             await _detail.DeleteAsync(id);
             var notification = new Notification

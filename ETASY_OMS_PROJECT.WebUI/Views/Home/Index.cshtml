@@ -180,7 +180,7 @@
                                     <h5 class="widget-user-desc">Yurtiçi Satış Koordinatörü</h5>
                                 </div>
                                 <div class="widget-user-image">
-                                    <img class="img-circle elevation-2" src="~/dist/img/@item.Avatar" alt="User Avatar">
+                                    <img class="img-circle elevation-2" src="~/dist/img/avatars/@item.Avatar" alt="User Avatar">
                                 </div>
                                 <div class="card-footer">
                                     <div class="row">
@@ -196,10 +196,15 @@
                                             <div class="description-block">
                                                 @{
                                                     var monthlyDomesticOrderCount = Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month &&
-                                                            _.Department.Name.ToLower() == "yurtiçi satış").Count();
+                                                                _.Department.Name.ToLower() == "yurtiçi satış").Count();
                                                     var yearlyDomesticOrderCount = Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
                                                         _.Department.Name.ToLower() == "yurtiçi satış").Count();
-                                                    var averageDomesticOrderCount = yearlyDomesticOrderCount / monthlyDomesticOrderCount;
+                                                    var averageDomesticOrderCount = 0;
+                                                    @if(averageDomesticOrderCount > 0)
+                                                    {
+                                                        averageDomesticOrderCount = yearlyDomesticOrderCount / monthlyDomesticOrderCount;                                                        
+                                                    }
+
                                                 }
                                                 <h5 class="description-header">@averageDomesticOrderCount</h5>
                                                 <span class="description-text">ORTALAMA</span>
@@ -234,8 +239,8 @@
                             <div class="card card-widget widget-user">
                                 <!-- Add the bg color to the header using any of the bg-* classes -->
                                 <div class="widget-user-header bg-info">
-                                    <h3 class="widget-user-username">Alexander Pierce</h3>
-                                    <h5 class="widget-user-desc">Founder & CEO</h5>
+                                    <h3 class="widget-user-username">@item.Name</h3>
+                                    <h5 class="widget-user-desc">Yurtdışı Satış Koordinatörü</h5>
                                 </div>
                                 <div class="widget-user-image">
                                     <img class="img-circle elevation-2" src="~/dist/img/avatars/@item.Avatar" alt="User Avatar">
@@ -255,11 +260,14 @@
                                             <div class="description-block">
                                                 @{
                                                     var monthlyExportOrderCount = Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month &&
-                                                        _.Department.Name.ToLower() == "yurtdışı satış").Count();
+                                                                _.Department.Name.ToLower() == "yurtdışı satış").Count();
                                                     var yearlyExportOrderCount = Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
                                                         _.Department.Name.ToLower() == "yurtdışı satış").Count();
-                                                        if(monthlyExportOrderCount )
-                                                    var averageExportOrderCount = yearlyExportOrderCount / monthlyExportOrderCount;
+                                                    var averageExportOrderCount = 0;
+                                                    if(monthlyExportOrderCount > 0)
+                                                    {
+                                                        averageExportOrderCount = yearlyExportOrderCount / monthlyExportOrderCount;                                                        
+                                                    }
                                                 }
                                                 <h5 class="description-header">@averageExportOrderCount</h5>
                                                 <span class="description-text">ORTALAMA</span>

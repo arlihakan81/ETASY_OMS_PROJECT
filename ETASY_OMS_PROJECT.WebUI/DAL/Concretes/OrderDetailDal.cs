@@ -16,56 +16,57 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
             _context = context;
         }
 
-        public override OrderDetail Get(int id)
+        public override OrderDetail Get(int id) // OrderDetail.Id
         {
             return _context.OrderDetails.Include(_ => _.Product)
-                .Include(_ => _.Order)
+                .Include(_ => _.Order).ThenInclude(_ => _.Customer)
                 .FirstOrDefault(_ => _.Id == id);
         }
 
         public override Task<List<OrderDetail>> GetAllAsync()
         {
-            return _context.OrderDetails.Include(_ => _.Order)
+            return _context.OrderDetails.Include(_ => _.Order).ThenInclude(_ => _.Customer)
                 .Include(_ => _.Product).ToListAsync();
         }
 
-        public CreateOrderDetailModel GetCreateOrderDetailModel(int orderId)
+        public CreateOrderDetailModel GetCreateOrderDetailModel(int orderId) // Order.Id
         {
             return new CreateOrderDetailModel
             {
-                Order = _context.Orders.Include(_ => _.Customer).Include(_ => _.Department)
-                .FirstOrDefault(_ => _.Id == orderId),
+                Order = _context.Orders.Include(_ => _.OrderDetail).ThenInclude(_ => _.Product).Include(_ => _.Customer)
+                    .Include(_ => _.Department)
+                    .FirstOrDefault(_ => _.Id == orderId),
                 Products = _context.Products.ToList(),
                 OrderDetails = _context.OrderDetails.Include(_ => _.Product)
-                    .Include(_ => _.Order).Where(_ => _.OrderId == orderId).ToList(),
+                    .Include(_ => _.Order).ThenInclude(_ => _.Customer).Where(_ => _.OrderId == orderId).ToList(),
                 OrderDetail = new()
             };
         }
 
-        public DetailOrderDetailModel GetDetailOrderDetailModel(int id)
+        public DetailOrderDetailModel GetDetailOrderDetailModel(int id) // Order.Id
         {
             return new DetailOrderDetailModel
             {
                 OrderDetails = _context.OrderDetails.Include(_ => _.Product)
-                    .Include(_ => _.Order).Where(_ => _.OrderId == id).ToList(),
-                Order = _context.Orders.Include(_ => _.Customer).Include(_ => _.Department)
-                    .FirstOrDefault(_ => _.Id == id),
+                    .Include(_ => _.Order).ThenInclude(_ => _.Customer).Where(_ => _.OrderId == id).ToList(),
+                Order = _context.Orders.Include(_ => _.OrderDetail).ThenInclude(_ => _.Product).Include(_ => _.Customer)
+                    .Include(_ => _.Department).FirstOrDefault(_ => _.Id == id),
                 OrderDetail = _context.OrderDetails.Include(_ => _.Product)
-                    .Include(_ => _.Order).FirstOrDefault(_ => _.OrderId == id)
+                    .Include(_ => _.Order).ThenInclude(_ => _.Customer).FirstOrDefault(_ => _.OrderId == id)
             };
         }
 
-        public UpdateOrderDetailModel GetUpdateOrderDetailModel(int id)
+        public UpdateOrderDetailModel GetUpdateOrderDetailModel(int id) // OrderDetail.Id
         {
             return new UpdateOrderDetailModel
             {
                 Products = _context.Products.ToList(),
-                Order = _context.Orders.Include(_ => _.Customer).Include(_ => _.Department)
-                    .FirstOrDefault(_ => _.Id == id),
+                Order = _context.Orders.Include(_ => _.OrderDetail).ThenInclude(_ => _.Product).Include(_ => _.Customer)
+                    .Include(_ => _.Department).FirstOrDefault(_ => _.OrderDetail.Id == id),
                 OrderDetails = _context.OrderDetails.Include(_ => _.Product)
-                    .Include(_ => _.Order).Where(_ => _.Id == id).ToList(),
+                    .Include(_ => _.Order).ThenInclude(_ => _.Customer).Where(_ => _.Id == id).ToList(),
                 OrderDetail = _context.OrderDetails.Include(_ => _.Product)
-                    .Include(_ => _.Order).FirstOrDefault(_ => _.Id == id)
+                    .Include(_ => _.Order).ThenInclude(_ => _.Customer).FirstOrDefault(_ => _.Id == id)
             };
         }
     }
