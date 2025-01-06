@@ -113,7 +113,7 @@
                                 <span class="info-box-text">Ülke Geneli Sevkiyat</span>
                                 <span class="info-box-number">
                                     @Model.Orders.Where(_ => _.Status == Status.Delivered
-                                             && _.Department.Name.ToLower() == "yurtiçi satış").Count()
+                                                                                          && _.Department.Name.ToLower() == "yurtiçi satış").Count()
                                 </span>
                                 @{
                                     var prevMonthDomesticDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
@@ -167,6 +167,126 @@
                         </div>
                         <!-- /.info-box -->
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Widget: user widget style 1 -->
+                        @foreach(var item in Model.Users.Where(_ => _.Role == Role.DomesticUser).Take(1))
+                        {
+                            <div class="card card-widget widget-user">
+                                <!-- Add the bg color to the header using any of the bg-* classes -->
+                                <div class="widget-user-header bg-info">
+                                    <h3 class="widget-user-username"></h3>
+                                    <h5 class="widget-user-desc">Yurtiçi Satış Koordinatörü</h5>
+                                </div>
+                                <div class="widget-user-image">
+                                    <img class="img-circle elevation-2" src="~/dist/img/@item.Avatar" alt="User Avatar">
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block">
+                                                <h5 class="description-header">@Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month && 
+                                                    _.Department.Name.ToLower() == "yurtiçi satış").Count()</h5>
+                                                <span class="description-text">AYLIK SİPARİŞ</span>
+                                            </div>
+                                            <!-- /.description-block -->
+                                        </div>
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block">
+                                                @{
+                                                    var monthlyDomesticOrderCount = Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month &&
+                                                            _.Department.Name.ToLower() == "yurtiçi satış").Count();
+                                                    var yearlyDomesticOrderCount = Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
+                                                        _.Department.Name.ToLower() == "yurtiçi satış").Count();
+                                                    var averageDomesticOrderCount = yearlyDomesticOrderCount / monthlyDomesticOrderCount;
+                                                }
+                                                <h5 class="description-header">@averageDomesticOrderCount</h5>
+                                                <span class="description-text">ORTALAMA</span>
+                                            </div>
+                                            <!-- /.description-block -->
+                                        </div>
+                                        <!-- /.col -->
+                                        <div class="col-sm-4">
+                                            <div class="description-block">
+                                                <h5 class="description-header">
+                                                    @Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
+                                                                                        _.Department.Name.ToLower() == "yurtiçi satış").Count()
+                                                </h5>
+                                                <span class="description-text">YILLIK SİPARİŞ</span>
+                                            </div>
+                                            <!-- /.description-block -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+                            </div>
+                        }
+
+                        <!-- /.widget-user -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-6">
+                        <!-- Widget: user widget style 1 -->
+                        @foreach(var item in Model.Users.Where(_ => _.Role == Role.ExportUser).Take(1))
+                        {
+                            <div class="card card-widget widget-user">
+                                <!-- Add the bg color to the header using any of the bg-* classes -->
+                                <div class="widget-user-header bg-info">
+                                    <h3 class="widget-user-username">Alexander Pierce</h3>
+                                    <h5 class="widget-user-desc">Founder & CEO</h5>
+                                </div>
+                                <div class="widget-user-image">
+                                    <img class="img-circle elevation-2" src="~/dist/img/avatars/@item.Avatar" alt="User Avatar">
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block">
+                                                <h5 class="description-header">@Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month && 
+                                                    _.Department.Name.ToLower() == "yurtdışı satış").Count()</h5>
+                                                <span class="description-text">AYLIK SİPARİŞ</span>
+                                            </div>
+                                            <!-- /.description-block -->
+                                        </div>
+                                        <!-- /.col -->
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block">
+                                                @{
+                                                    var monthlyExportOrderCount = Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month &&
+                                                        _.Department.Name.ToLower() == "yurtdışı satış").Count();
+                                                    var yearlyExportOrderCount = Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
+                                                        _.Department.Name.ToLower() == "yurtdışı satış").Count();
+                                                        if(monthlyExportOrderCount )
+                                                    var averageExportOrderCount = yearlyExportOrderCount / monthlyExportOrderCount;
+                                                }
+                                                <h5 class="description-header">@averageExportOrderCount</h5>
+                                                <span class="description-text">ORTALAMA</span>
+                                            </div>
+                                            <!-- /.description-block -->
+                                        </div>
+                                        <!-- /.col -->
+                                        <div class="col-sm-4">
+                                            <div class="description-block">
+                                                <h5 class="description-header">
+                                                    @Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
+                                                             _.Department.Name.ToLower() == "yurtdışı satış").Count()
+                                                </h5>
+                                                <span class="description-text">YILLIK SİPARİŞ</span>
+                                            </div>
+                                            <!-- /.description-block -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+                            </div>
+                        }
+                        
+                        <!-- /.widget-user -->
+                    </div>
+                    <!-- /.col -->
                 </div>
                 <!-- TO DO List -->
                 <div class="card">

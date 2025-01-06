@@ -12,10 +12,10 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">                
-        <!-- Messages Dropdown Menu -->
+        <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="far fa-comments"></i>
+                <i class="far fa-bell"></i>
                 <span class="badge badge-danger navbar-badge">@context.NotifyUsers.Include(_ => _.User).Include(_ => _.Notification).Where(_ => _.IsRead == false && _.User.Name == User.Identity.Name).Count()
                 </span>
             </a>
@@ -25,7 +25,7 @@
                     foreach (var item in context.NotifyUsers.Include(_ => _.User)
                         .Include(_ => _.Notification).ThenInclude(_ => _.User)
                         .Where(_ => _.IsRead == false && _.User.Name == User.Identity.Name)
-                        .OrderByDescending(_ => _.CreatedAt).Take(4))
+                        .OrderByDescending(_ => _.CreatedAt).Take(3))
                     {
                         <section class="dropdown-item">
                             <!-- Message Start -->
@@ -69,12 +69,12 @@
                         </section>
                         <div class="dropdown-divider"></div>
                     }
-                    <a asp-controller="Notification" asp-action="Index" class="dropdown-item dropdown-footer">Tüm Bildirimleri Gör</a>
+                    <a asp-controller="NotifyUser" asp-action="Index" class="dropdown-item dropdown-footer">Tüm Bildirimleri Gör</a>
                 }
                 else
                 {
                     <a class="dropdown-item">Okunmayan herhangi bir mesajınız yok!</a>
-                    <a asp-controller="Notification" asp-action="Index" class="dropdown-item dropdown-footer">Tüm Bildirimleri Gör</a>
+                    <a asp-controller="NotifyUser" asp-action="Index" class="dropdown-item dropdown-footer">Tüm Bildirimleri Gör</a>
                 }
             </div>
         </li>

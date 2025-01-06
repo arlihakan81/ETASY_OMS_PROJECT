@@ -16,12 +16,14 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
 
         public override async Task<List<NotifyUser>> GetAllAsync()
         {
-            return await _context.NotifyUsers.Include(_ => _.User).Include(_ => _.Notification).ToListAsync();
+            return await _context.NotifyUsers.Include(_ => _.User).Include(_ => _.Notification)
+                .ThenInclude(_ => _.User).ToListAsync();
         }
 
         public override NotifyUser Get(int id)
         {
-            return _context.NotifyUsers.Include(_ => _.User).Include(_ => _.Notification).FirstOrDefault(_ => _.Id == id);
+            return _context.NotifyUsers.Include(_ => _.User).Include(_ => _.Notification)
+                .FirstOrDefault(_ => _.Id == id);
         }
 
     }

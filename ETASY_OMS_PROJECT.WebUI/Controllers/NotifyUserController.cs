@@ -14,6 +14,12 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            return View(await _notifyUser.GetAllAsync());
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Read(int id)
         {
             var notify = _notifyUser.Get(id);
