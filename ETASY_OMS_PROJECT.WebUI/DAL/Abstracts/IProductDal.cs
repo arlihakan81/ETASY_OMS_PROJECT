@@ -6,8 +6,8 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Abstracts
     public interface IProductDal : IGenericRepository<Product>
     {
         Task<bool> CheckCodeAsync(string code);
-        Task<bool> CheckCodeAsync(int id, string code);
+        Task<bool> CheckCodeAsync(Guid id, string code);
         Task<bool> CheckNameAsync(string name);
-        Task<bool> CheckNameAsync(int id, string name);
+        Task<bool> CheckNameAsync(Guid id, string name);
     }
 }

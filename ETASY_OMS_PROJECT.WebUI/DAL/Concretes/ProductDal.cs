@@ -20,7 +20,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
             return await _context.Products.AnyAsync(_ => _.Code == code);
         }
 
-        public async Task<bool> CheckCodeAsync(int id, string code)
+        public async Task<bool> CheckCodeAsync(Guid id, string code)
         {
             return await _context.Products.Where(_ => _.Id != id)
                 .AnyAsync(_ => _.Code == code);
@@ -31,7 +31,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
             return await _context.Products.AnyAsync(_ => _.Name.ToLower() == name.ToLower());
         }
 
-        public async Task<bool> CheckNameAsync(int id, string name)
+        public async Task<bool> CheckNameAsync(Guid id, string name)
         {
             return await _context.Products.Where(_ => _.Id != id)
                 .AnyAsync(_ => _.Name.ToLower() == name.ToLower());

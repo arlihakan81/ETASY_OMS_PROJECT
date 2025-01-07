@@ -5,11 +5,11 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Repos.Abstract
 {
     public interface IGenericRepository<TEntity> where TEntity : EntityBase
     {
-        TEntity Get(int id);
+        TEntity Get(Guid id);
         Task<List<TEntity>> GetAllAsync();
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(Guid id);
         Task SaveAsync();
 
     }

@@ -27,14 +27,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
 
         [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpGet]
-        public IActionResult Create(int id)
+        public IActionResult Create(Guid id)
         {
             return View(_detail.GetCreateOrderDetailModel(id));
         }
 
         [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpPost]
-        public async Task<IActionResult> Create(int id, CreateOrderDetailModel model)
+        public async Task<IActionResult> Create(Guid id, CreateOrderDetailModel model)
         {
             if(ModelState.IsValid)
             {
@@ -50,7 +50,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 {
                     Operation = Operation.Order_Create,
                     Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle yeni bir sipariş kaydı ekledi.",
-                    UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                    UserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                     CreatedAt = DateTime.Now
                 };
                 await _notification.AddAsync(notification);
@@ -77,14 +77,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
 
         [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpGet]
-        public IActionResult Update(int id)
+        public IActionResult Update(Guid id)
         {
             return View(_detail.GetUpdateOrderDetailModel(id));
         }
 
         [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpPost]
-        public async Task<IActionResult> Update(int id, UpdateOrderDetailModel model)
+        public async Task<IActionResult> Update(Guid id, UpdateOrderDetailModel model)
         {
             if (ModelState.IsValid)
             {
@@ -100,7 +100,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 {
                     Operation = Operation.Order_Update,
                     Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir sipariş kaydını güncelledi.",
-                    UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                    UserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                     CreatedAt = DateTime.Now
                 };
                 await _notification.AddAsync(notification);
@@ -126,21 +126,21 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detail(int id) // Order.Id
+        public IActionResult Detail(Guid id) // Order.Id
         {
             return View(_detail.GetDetailOrderDetailModel(id));
         }
 
         [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpGet]
-        public async Task<IActionResult> Delete(int id) // OrderDetail.Id
+        public async Task<IActionResult> Delete(Guid id) // OrderDetail.Id
         {
             await _detail.DeleteAsync(id);
             var notification = new Notification
             {
                 Operation = Operation.Order_Delete,
                 Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir sipariş kaydını sildi.",
-                UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                UserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 CreatedAt = DateTime.Now
             };
 

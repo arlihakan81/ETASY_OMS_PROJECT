@@ -10,7 +10,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Entity.Entities
         public string Name { get; set; }
         public string Password { get; set; }
         public Role Role { get; set; }
-        public int DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
         public Department Department { get; set; }
         public List<NotifyUser> NotifyUsers { get; set; }
 

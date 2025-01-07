@@ -8,10 +8,10 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Abstracts
     public interface IAccountDal : IGenericRepository<User>
     {
         Task<bool> CheckUsernameAsync(string Username);
-        Task<bool> CheckUsernameAsync(int id, string Username);
+        Task<bool> CheckUsernameAsync(Guid id, string Username);
         Task<User> CheckAccountAsync(LoginViewModel model);
-        Task<bool> CheckResetAsync(int id, ResetViewModel model);
+        Task<bool> CheckResetAsync(Guid id, ResetViewModel model);
         CreateAccountModel GetCreateAccountModel();
-        UpdateAccountModel GetUpdateAccountModel(int id);
+        UpdateAccountModel GetUpdateAccountModel(Guid id);
     }
 }

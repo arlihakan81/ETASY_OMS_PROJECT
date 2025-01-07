@@ -110,7 +110,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             {
                 Operation = Operation.Account_Logout,
                 Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle oturumunu sonlandırdı.",
-                UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                UserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 CreatedAt = DateTime.Now
             };
             await _notification.AddAsync(notification);
@@ -150,7 +150,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         Name = model.Username,
                         Password = _service.HashPassword(model.Password),
                         Role = Role.Unauthorized,
-                        DepartmentId = 1,
+                        DepartmentId = new Guid(),
                         CreatedAt = DateTime.Now
                     };
                     await _account.AddAsync(user);
@@ -191,18 +191,18 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Update(int id)
+        public IActionResult Update(Guid id)
         {
-            id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            id = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             return View(_account.Get(id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, User model)
+        public async Task<IActionResult> Update(Guid id, User model)
         {
             if (ModelState.IsValid)
             {
-                id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                id = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 if (!await _account.CheckUsernameAsync(id, model.Name))
                 {
                     var user = _account.Get(id);
@@ -261,9 +261,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Reset(int id)
+        public IActionResult Reset(Guid id)
         {
-            id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            id = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             return View(new ResetViewModel
             {
                 User = _account.Get(id)
@@ -271,11 +271,11 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Reset(int id, ResetViewModel model)
+        public async Task<IActionResult> Reset(Guid id, ResetViewModel model)
         {
             if(ModelState.IsValid)
             {
-                id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                id = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 if (await _account.CheckResetAsync(id, model))
                 {
                     var user = _account.Get(id);
@@ -328,7 +328,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> AccessDenied()
         {
-            int id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            Guid id = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var notification = new Notification
             {
                 Operation = Operation.Access_Denied,
@@ -354,9 +354,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            id = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var user = _account.Get(id);
             if(user.Role is not Role.Admin)
             {

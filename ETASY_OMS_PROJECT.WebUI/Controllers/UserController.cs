@@ -77,13 +77,13 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Update(int id)
+        public IActionResult Update(Guid id)
         {
             return View(_account.GetUpdateAccountModel(id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, UpdateAccountModel model)
+        public async Task<IActionResult> Update(Guid id, UpdateAccountModel model)
         {
             if (ModelState.IsValid)
             {

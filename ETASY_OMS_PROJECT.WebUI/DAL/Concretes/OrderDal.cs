@@ -22,7 +22,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
                 .Include(_ => _.Department).ToListAsync();
         }
 
-        public override Order Get(int id)
+        public override Order Get(Guid id)
         {
             return _context.Orders.Include(_ => _.Customer)
                 .Include(_ => _.Department).FirstOrDefault();
@@ -34,7 +34,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
                 .Include(_ => _.Department).AnyAsync(_ => _.FormId == formId);
         }
 
-        public async Task<bool> CheckFormIdAsync(int id, int formId)
+        public async Task<bool> CheckFormIdAsync(Guid id, int formId)
         {
             return await _context.Orders.Include(_ => _.Customer)
                 .Include(_ => _.Department).Where(_ => _.Id != id)
@@ -50,24 +50,24 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
             };
         }
 
-        public UpdateOrderModel GetUpdateOrderModel(int id)
+        public UpdateOrderModel GetUpdateOrderModel(Guid id)
         {
             return new UpdateOrderModel
             {
                 Order = _context.Orders.Include(_ => _.Customer)
-                    .Include(_ => _.Department).FirstOrDefault(),
+                    .Include(_ => _.Department).FirstOrDefault(_ => _.Id == id),
                 Customers = _context.Customers.ToList()
             };
         }
 
-        public DetailOrderModel GetDetailOrderModel(int id)
+        public DetailOrderModel GetDetailOrderModel(Guid id)
         {
             return new DetailOrderModel
             {
                 Order = _context.Orders.Include(_ => _.Customer)
                     .Include(_ => _.Department).FirstOrDefault(),
                 Products = _context.Products.ToList(),
-                OrderDetails = _context.OrderDetails.Include(_ => _.Product).ToList()
+                OrderDetails = _context.OrderDetails.Include(_ => _.Product).Where(_ => _.OrderId == id).ToList()
             };
         }
     }

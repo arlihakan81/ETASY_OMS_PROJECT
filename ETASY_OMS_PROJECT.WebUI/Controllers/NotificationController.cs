@@ -16,14 +16,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index(Guid id)
         {
-            id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            id = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             return View(await _notification.GetAllAsync(id));
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             await _notification.DeleteAsync(id);
             return RedirectToAction("Index");

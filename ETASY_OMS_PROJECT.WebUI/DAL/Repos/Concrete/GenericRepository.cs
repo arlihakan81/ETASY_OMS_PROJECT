@@ -21,13 +21,13 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Repos.Concrete
             await SaveAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Guid id)
         {
             _context.Set<TEntity>().Remove(Get(id));
             await SaveAsync();
         }
 
-        public virtual TEntity Get(int id)
+        public virtual TEntity Get(Guid id)
         {
             return _context.Set<TEntity>().Where(_ => _.Id == id).SingleOrDefault();
         }

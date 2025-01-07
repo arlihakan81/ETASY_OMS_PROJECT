@@ -20,10 +20,10 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Read(int id)
+        public async Task<IActionResult> Read(Guid id)
         {
             var notify = _notifyUser.Get(id);
-            notify.UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            notify.UserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             notify.IsRead = true;
             await _notifyUser.UpdateAsync(notify);
             return RedirectToAction("Index", "Home");

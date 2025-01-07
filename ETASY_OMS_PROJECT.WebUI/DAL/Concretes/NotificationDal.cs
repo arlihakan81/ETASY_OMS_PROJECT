@@ -14,7 +14,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
             _context = context;
         }
 
-        public async Task<List<Notification>> GetAllAsync(int id)
+        public async Task<List<Notification>> GetAllAsync(Guid id)
         {
             return await _context.Notifications.Include(_ => _.User).ToListAsync();
         }

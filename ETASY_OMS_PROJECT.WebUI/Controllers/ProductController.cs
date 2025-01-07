@@ -58,7 +58,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                         {
                             Operation = Operation.Product_Create,
                             Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle yeni bir ürün kaydı ekledi.",
-                            UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                            UserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                             CreatedAt = DateTime.Now
                         };
                         await _notification.AddAsync(notification);
@@ -98,14 +98,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
 
         [Authorize(Roles = "Quality")]
         [HttpGet]
-        public IActionResult Update(int id)
+        public IActionResult Update(Guid id)
         {
             return View(_product.Get(id));
         }
 
         [Authorize(Roles = "Quality")]
         [HttpPost]
-        public async Task<IActionResult> Update(int id, Product model)
+        public async Task<IActionResult> Update(Guid id, Product model)
         {
             if(ModelState.IsValid)
             {
@@ -121,7 +121,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 {
                     Operation = Operation.Product_Update,
                     Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir ürün kaydını güncelledi.",
-                    UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                    UserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                     CreatedAt = DateTime.Now
                 };
                 await _notification.AddAsync(notification);
@@ -148,14 +148,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
 
         [Authorize(Roles = "Quality")]
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             await _product.DeleteAsync(id);
             var notification = new Notification
             {
                 Operation = Operation.Product_Delete,
                 Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir sipariş kaydını sildi.",
-                UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                UserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 CreatedAt = DateTime.Now
             };
             await _notification.AddAsync(notification);

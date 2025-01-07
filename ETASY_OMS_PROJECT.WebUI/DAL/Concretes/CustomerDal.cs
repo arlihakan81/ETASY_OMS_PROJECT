@@ -20,7 +20,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
             return await _context.Customers.AnyAsync(_ => _.Name.ToLower() == name.ToLower());
         }
 
-        public async Task<bool> CheckNameAsync(int id, string name)
+        public async Task<bool> CheckNameAsync(Guid id, string name)
         {
             return await _context.Customers.Where(_ => _.Id != id)
                 .AnyAsync(_ => _.Name.ToLower() == name.ToLower());

@@ -56,7 +56,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                     {
                         Operation = Operation.Customer_Create,
                         Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle yeni müşteri ekledi.",
-                        UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                        UserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                         CreatedAt = DateTime.Now
                     };
                     await _notification.AddAsync(notification);
@@ -89,14 +89,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
 
         [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpGet]
-        public IActionResult Update(int id)
+        public IActionResult Update(Guid id)
         {
             return View(_customer.Get(id));
         }
 
         [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpPost]
-        public async Task<IActionResult> Update(int id, Customer model)
+        public async Task<IActionResult> Update(Guid id, Customer model)
         {
             if(ModelState.IsValid)
             {
@@ -113,7 +113,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                     {
                         Operation = Operation.Customer_Update,
                         Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir müşteri kaydını güncelledi.",
-                        UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                        UserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                         CreatedAt = DateTime.Now
                     };
                     await _notification.AddAsync(notification);
@@ -146,14 +146,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
 
         [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             await _customer.DeleteAsync(id);
             var notification = new Notification
             {
                 Operation = Operation.Customer_Create,
                 Description = $"{User.Identity.Name} isimli kullanıcı {DateTime.Now} itibariyle bir müşteri kaydını sildi.",
-                UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                UserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 CreatedAt = DateTime.Now
             };
             await _notification.AddAsync(notification);

@@ -6,8 +6,8 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Abstracts
 {
     public interface IOrderDetailDal : IGenericRepository<OrderDetail>
     {
-        CreateOrderDetailModel GetCreateOrderDetailModel(int orderId);
-        UpdateOrderDetailModel GetUpdateOrderDetailModel(int id);
-        DetailOrderDetailModel GetDetailOrderDetailModel(int id);
+        CreateOrderDetailModel GetCreateOrderDetailModel(Guid id);
+        UpdateOrderDetailModel GetUpdateOrderDetailModel(Guid id);
+        DetailOrderDetailModel GetDetailOrderDetailModel(Guid id);
     }
 }

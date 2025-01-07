@@ -20,7 +20,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
                 .ThenInclude(_ => _.User).ToListAsync();
         }
 
-        public override NotifyUser Get(int id)
+        public override NotifyUser Get(Guid id)
         {
             return _context.NotifyUsers.Include(_ => _.User).Include(_ => _.Notification)
                 .FirstOrDefault(_ => _.Id == id);

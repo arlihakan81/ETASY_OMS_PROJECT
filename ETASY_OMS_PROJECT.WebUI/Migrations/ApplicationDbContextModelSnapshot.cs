@@ -24,11 +24,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
 
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Customer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -49,11 +47,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
 
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Department", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -71,11 +67,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
 
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Notification", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -89,8 +83,8 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -101,11 +95,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
 
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.NotifyUser", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -113,14 +105,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
-                    b.Property<int>("NotificationId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("NotificationId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -133,20 +125,18 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
 
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateOnly>("DueDate")
                         .HasColumnType("date");
@@ -171,20 +161,18 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
 
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.OrderDetail", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -194,7 +182,8 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.HasIndex("ProductId");
 
@@ -203,11 +192,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
 
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
@@ -231,11 +218,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
 
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
@@ -243,8 +228,8 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -317,8 +302,8 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.OrderDetail", b =>
                 {
                     b.HasOne("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
+                        .WithOne("OrderDetail")
+                        .HasForeignKey("ETASY_OMS_PROJECT.WebUI.Entity.Entities.OrderDetail", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -347,6 +332,11 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Notification", b =>
                 {
                     b.Navigation("NotifyUsers");
+                });
+
+            modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Order", b =>
+                {
+                    b.Navigation("OrderDetail");
                 });
 
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.User", b =>

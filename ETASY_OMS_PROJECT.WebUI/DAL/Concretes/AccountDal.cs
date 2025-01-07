@@ -20,7 +20,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
             _service = service;
         }
 
-        public override User Get(int id)
+        public override User Get(Guid id)
         {
             return _context.Users.Include(_ => _.Department).FirstOrDefault(_ => _.Id == id);
         }
@@ -37,7 +37,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<bool> CheckResetAsync(int id, ResetViewModel model)
+        public async Task<bool> CheckResetAsync(Guid id, ResetViewModel model)
         {
             return await _context.Users.Include(_ => _.Department)
                 .Where(_ => _.Id == id)
@@ -50,7 +50,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
                 .AnyAsync(_ => _.Name.ToLower() == Username.ToLower());
         }
 
-        public async Task<bool> CheckUsernameAsync(int id, string Username)
+        public async Task<bool> CheckUsernameAsync(Guid id, string Username)
         {
             return await _context.Users.Include(_ => _.Department).Where(_ => _.Id != id)
                 .AnyAsync(_ => _.Name.ToLower() == Username.ToLower());
@@ -65,7 +65,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
             };
         }
 
-        public UpdateAccountModel GetUpdateAccountModel(int id)
+        public UpdateAccountModel GetUpdateAccountModel(Guid id)
         {
             return new UpdateAccountModel
             {

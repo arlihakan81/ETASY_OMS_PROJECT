@@ -5,6 +5,6 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Abstracts
 {
     public interface INotificationDal : IGenericRepository<Notification>
     {
-        Task<List<Notification>> GetAllAsync(int id);
+        Task<List<Notification>> GetAllAsync(Guid id);
     }
 }

@@ -42,14 +42,14 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
 
         [Authorize(Roles = "HumanResources")]
         [HttpGet]
-        public IActionResult Update(int id)
+        public IActionResult Update(Guid id)
         {
             return View(_department.Get(id));
         }
 
         [Authorize(Roles = "HumanResources")]
         [HttpPost]
-        public async Task<IActionResult> Update(int id, Department model)
+        public async Task<IActionResult> Update(Guid id, Department model)
         {
             var dep = _department.Get(id);
             dep.Name = model.Name;
@@ -61,7 +61,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
 
         [Authorize(Roles = "HumanResources")]
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             await _department.DeleteAsync(id);
             return RedirectToAction("Index");
