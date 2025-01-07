@@ -71,6 +71,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <!-- text input -->
+                                    <input asp-for="@Model.Order.Id" type="hidden" />
                                     <div class="form-group">
                                         <label>Form Numarası</label>
                                         <input asp-for="@Model.Order.FormId" type="number" class="form-control" readonly />
@@ -92,6 +93,7 @@
                                                 <tr>
                                                     <th>Ürün Adı</th>
                                                     <th>Miktarı</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -102,6 +104,11 @@
                                                         <tr>
                                                             <td>@item.Product.Name</td>
                                                             <td>@item.Quantity</td>
+                                                            <td>
+                                                                <a class="btn btn-warning btn-sm" asp-action="Update" asp-route-id="@item.Id">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+                                                            </td>
                                                         </tr>
                                                     }
                                                 }
@@ -124,7 +131,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="m-0">
-                                                            <input asp-for="@Model.OrderDetail.Quantity" type="number" class="form-control" value="" />
+                                                            <input asp-for="@Model.OrderDetail.Quantity" type="number" class="form-control" value="" required />
                                                         </div>
                                                     </td>
                                                 </tr>

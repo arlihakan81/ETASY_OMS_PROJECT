@@ -83,6 +83,8 @@
                                         <input asp-for="@Model.Order.Customer.Name" type="text" class="form-control" readonly />
                                     </div>
                                 </div>
+                                <input asp-for="@Model.OrderDetail.OrderId" type="hidden" />
+                                <input asp-for="@Model.OrderDetail.CreatedAt" type="hidden" />
                             </div>
                             <div class="row gx-3">
                                 <div class="col-12">

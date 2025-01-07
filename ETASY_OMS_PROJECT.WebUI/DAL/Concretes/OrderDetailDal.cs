@@ -58,7 +58,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
             return new UpdateOrderDetailModel
             {
                 Products = _context.Products.ToList(),
-                Order = _context.Orders.Include(_ => _.OrderDetail).ThenInclude(_ => _.Product).Include(_ => _.Customer)
+                Order = _context.Orders.Include(_ => _.Customer)
                     .Include(_ => _.Department).FirstOrDefault(_ => _.OrderDetail.Id == id),
                 OrderDetails = _context.OrderDetails.Include(_ => _.Product)
                     .Include(_ => _.Order).ThenInclude(_ => _.Customer).Where(_ => _.Id == id).ToList(),

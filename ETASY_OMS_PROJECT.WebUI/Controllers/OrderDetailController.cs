@@ -34,17 +34,18 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
 
         [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpPost]
-        public async Task<IActionResult> Create(Guid id, CreateOrderDetailModel model)
+        public async Task<IActionResult> Create(CreateOrderDetailModel model)
         {
             if(ModelState.IsValid)
             {
-                await _detail.AddAsync(new OrderDetail
+                var detail = new OrderDetail
                 {
-                    OrderId = id,
+                    OrderId = model.Order.Id,
                     ProductId = model.OrderDetail.ProductId,
                     Quantity = model.OrderDetail.Quantity,
                     CreatedAt = DateTime.Now
-                });
+                };
+                await _detail.AddAsync(detail);
                 TempData["success"] = $"{model.Order.FormId} No'lu Siparişinize yeni bir ürün eklendi.";
                 var notification = new Notification
                 {
@@ -66,7 +67,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                     });
                 }
 
-                return RedirectToAction("Create", "OrderDetail", new { model.OrderDetail.OrderId });
+                return RedirectToAction("Create", "OrderDetail", new { detail.OrderId });
             }
             else
             {
@@ -116,7 +117,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                     });
                 }
 
-                return RedirectToAction("Update", "OrderDetail", new { model.OrderDetail.Id });
+                return RedirectToAction("Update", "OrderDetail", new { detail.Id });
             }
             else
             {
@@ -157,7 +158,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 });
             }
 
-            return RedirectToAction("Detail", "OrderDetail");
+            return RedirectToAction("Index", "Order");
         }
 
 

@@ -26,7 +26,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             notify.UserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             notify.IsRead = true;
             await _notifyUser.UpdateAsync(notify);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "NotifyUser");
         }
     }
 }
