@@ -65,6 +65,32 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Material", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Materials");
+                });
+
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Notification", b =>
                 {
                     b.Property<Guid>("Id")
@@ -216,6 +242,32 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Supplier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Suppliers");
+                });
+
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -248,6 +300,64 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Warehouse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("Warehouses");
+                });
+
+            modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.WarehouseMaterial", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("MaterialId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("WarehouseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("WarehouseMaterials");
                 });
 
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Notification", b =>
@@ -327,6 +437,36 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                         .IsRequired();
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Warehouse", b =>
+                {
+                    b.HasOne("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.WarehouseMaterial", b =>
+                {
+                    b.HasOne("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Material");
+
+                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("ETASY_OMS_PROJECT.WebUI.Entity.Entities.Notification", b =>

@@ -1,0 +1,116 @@
+﻿@model UpdateWarehouseModel
+
+@{
+    ViewData["title"] = "Malzeme Giriş Formu";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@ViewData["title"]</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item active">@ViewData["title"]</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card card-warning">
+                    <div class="card-header">
+                        <h3 class="card-title">@ViewData["title"]</h3>
+                    </div>
+                    @if (TempData["error"] is not null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-close"></i>
+                            <span>@TempData["error"]</span>
+                        </div>
+                    }
+                    else if (TempData["success"] is not null)
+                    {
+                        <div class="alert alert-success">
+                            <i class="fas fa-close"></i>
+                            <span>@TempData["success"]</span>
+                        </div>
+                    }
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <form asp-action="Update" method="post">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label>MGFN</label>
+                                        <input asp-for="@Model.Warehouse.Code" type="number" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label>Açıklama</label>
+                                        <textarea asp-for="@Model.Warehouse.Description" class="form-control" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gx-3">
+                                <div class="col-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="orderTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tearikçi Adı</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select asp-for="@Model.Warehouse.SupplierId" class="form-control" required>
+                                                            @if (Model.Suppliers is not null)
+                                                            {
+                                                                <option value="">Lütfen tedarikçi seçin</option>
+                                                                @foreach (var item in Model.Suppliers)
+                                                                {
+                                                                    <option value="@item.Id">@item.Name</option>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="">Hiçbir tedarikçi yok</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <input asp-for="@Model.Warehouse.CreatedAt" type="hidden" />
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-secondary btn-sm">Kaydet</button>
+                                        <a class="btn btn-warning btn-sm" asp-action="Index">İptal</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

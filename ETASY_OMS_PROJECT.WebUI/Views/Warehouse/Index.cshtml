@@ -1,6 +1,6 @@
-﻿@model List<Product>
+﻿@model List<Warehouse>
 @{
-    ViewData["title"] = "Ürünlerimiz";
+    ViewData["title"] = "Depo Listesi";
 }
 
 <!-- Content Header (Page header) -->
@@ -22,7 +22,7 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">                
+            <div class="col-12">
                 <div class="card">
                     <div class="card-body">
                         <p>
@@ -31,53 +31,56 @@
                                 Yeni
                             </a>
                         </p>
-                        @if(Model.Count > 0)
+                        @if (Model.Count > 0)
                         {
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Ürün kodu</th>
-                                        <th>Ürün Adı</th>
-                                        <th>Ölçüsü</th>
+                                        <th>Malzeme Giriş No</th>
+                                        <th>Tedarikçi Adı</th>
+                                        <th>Malzeme Giriş Tarihi</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach(var item in Model)
+                                    @foreach (var item in Model)
                                     {
                                         <tr>
                                             <td>@item.Code</td>
-                                            <td>@item.Name</td>
-                                            <td>@item.Scale</td>
+                                            <td>@item.Supplier.Name</td>
+                                            <td>@item.CreatedAt</td>
                                             <td>
-                                                <a class="btn btn-warning btn-sm" asp-controller="Product" asp-action="Update" asp-route-id="@item.Id">
+                                                <a class="btn btn-warning btn-sm" asp-controller="Warehouse" asp-action="Update" asp-route-id="@item.Id">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a class="btn btn-danger btn-sm" asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
+                                                @if(User.FindFirstValue(ClaimTypes.Role) == Role.WarehouseController.ToString())
+                                                {
+                                                    <a class="btn btn-danger btn-sm" asp-controller="Warehouse" asp-action="Delete" asp-route-id="@item.Id">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>                                                    
+                                                }
                                             </td>
                                         </tr>
                                     }
-                                    
+
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Ürün kodu</th>
-                                        <th>Ürün Adı</th>
-                                        <th>Ölçüsü</th>
+                                        <th>MGF</th>
+                                        <th>Tedarikçi Adı</th>
+                                        <th>Malzeme Giriş Tarihi</th>
                                         <th></th>
                                     </tr>
                                 </tfoot>
                             </table>
                         }
-                        else {
+                        else
+                        {
                             <div class="alert alert-danger">
-                                <i class="fas fa-close"></i>
-                                <span>Henüz kayıtlı hiçbir ürününüz yok</span>
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Henüz depo kaydınız yok!</span>
                             </div>
                         }
-                        
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -90,4 +93,3 @@
     <!-- /.container-fluid -->
 </section>
 <!-- /.content -->
-

@@ -29,7 +29,7 @@
                             @if (User.FindFirstValue(ClaimTypes.Role) == Role.ExportUser.ToString()
                             || User.FindFirstValue(ClaimTypes.Role) == Role.DomesticUser.ToString())
                             {
-                                <a asp-action="Create" class="btn btn-secondary">
+                                <a asp-action="Create" class="btn btn-secondary btn-sm">
                                     <i class="fas fa-plus"></i>
                                     Yeni
                                 </a>

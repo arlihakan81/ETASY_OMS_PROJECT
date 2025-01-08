@@ -1,0 +1,87 @@
+﻿@model Supplier
+
+@{
+    ViewData["title"] = "Yeni Tedarikçi";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item active">Tedarikçi Ekle</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<form asp-action="Create" method="post">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <!-- general form elements disabled -->
+                    <div class="card card-warning">
+                        <div class="card-header">
+                            <h3 class="card-title">Yeni Tedarikçi Ekle</h3>
+                        </div>
+                        @if (TempData["error"] is not null)
+                        {
+                            <div class="alert alert-danger">
+                                <i class="fas fa-close"></i>
+                                <span>@TempData["error"]</span>
+                            </div>
+                        }
+                        else if (TempData["success"] is not null)
+                        {
+                            <div class="alert alert-success">
+                                <i class="fas fa-close"></i>
+                                <span>@TempData["success"]</span>
+                            </div>
+                        }
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Tedarikçi Kodu</label>
+                                        <input asp-for="Code" type="text" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Tedarikçi Adı</label>
+                                        <input asp-for="Name" type="text" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label>Adresi</label>
+                                        <textarea asp-for="Address" rows="5" class="form-control" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-secondary btn-sm">Kaydet</button>
+                                        <a class="btn btn-warning btn-sm" asp-action="Index">İptal</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </section>
+</form>
+
+
+

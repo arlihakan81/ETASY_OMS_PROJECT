@@ -1,7 +1,8 @@
-﻿@model List<Product>
+﻿@model List<Supplier>
 @{
-    ViewData["title"] = "Ürünlerimiz";
+    ViewData["title"] = "Tedarikçilerimiz";
 }
+
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -22,62 +23,68 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">                
+            <div class="col-12">
                 <div class="card">
                     <div class="card-body">
                         <p>
-                            <a asp-controller="Product" asp-action="Create" class="btn btn-secondary btn-sm">
-                                <i class="fas fa-plus"></i>
-                                Yeni
-                            </a>
+                            @if (User.FindFirstValue(ClaimTypes.Role) == Role.WarehouseController.ToString())
+                            {
+                                <a asp-action="Create" class="btn btn-secondary btn-sm">
+                                    <i class="fas fa-plus"></i>
+                                    Yeni
+                                </a>
+                            }
                         </p>
-                        @if(Model.Count > 0)
+                        @if (Model.Count > 0)
                         {
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Ürün kodu</th>
-                                        <th>Ürün Adı</th>
-                                        <th>Ölçüsü</th>
+                                        <th>Tedarikçi Kodu</th>
+                                        <th>Tedarikçi Adı</th>
+                                        <th>Adresi</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach(var item in Model)
+                                    @foreach (var item in Model)
                                     {
                                         <tr>
                                             <td>@item.Code</td>
                                             <td>@item.Name</td>
-                                            <td>@item.Scale</td>
+                                            <td>@item.Address</td>
                                             <td>
-                                                <a class="btn btn-warning btn-sm" asp-controller="Product" asp-action="Update" asp-route-id="@item.Id">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <a class="btn btn-danger btn-sm" asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
+                                                @if (User.FindFirstValue(ClaimTypes.Role) == Role.WarehouseController.ToString())
+                                                {
+                                                    <a class="btn btn-warning btn-sm" asp-action="Update" asp-route-id="@item.Id">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a class="btn btn-warning btn-sm" asp-action="Delete" asp-route-id="@item.Id">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                }
                                             </td>
                                         </tr>
                                     }
-                                    
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Ürün kodu</th>
-                                        <th>Ürün Adı</th>
-                                        <th>Ölçüsü</th>
+                                        <th>Tedarikçi Kodu</th>
+                                        <th>Tedarikçi Adı</th>
+                                        <th>Adresi</th>
                                         <th></th>
                                     </tr>
                                 </tfoot>
                             </table>
                         }
-                        else {
+                        else
+                        {
                             <div class="alert alert-danger">
-                                <i class="fas fa-close"></i>
-                                <span>Henüz kayıtlı hiçbir ürününüz yok</span>
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Henüz kayıtlı hiçbir tedarikçiniz yok</span>
                             </div>
                         }
-                        
+
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -90,4 +97,5 @@
     <!-- /.container-fluid -->
 </section>
 <!-- /.content -->
+
 

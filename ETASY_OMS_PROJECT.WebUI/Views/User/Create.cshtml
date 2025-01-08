@@ -50,6 +50,12 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
+                                        <label>Avatar</label>
+                                        <input asp-for="@Model.User.Image" type="file" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
                                         <label>Kullanıcı Adı</label>
                                         <input asp-for="@Model.User.Name" type="text" class="form-control" required />
                                     </div>
@@ -69,6 +75,9 @@
                                             <option value="@Role.DomesticUser">Kullanıcı(Yurtiçi Satış)</option>
                                             <option value="@Role.Quality">Kullanıcı(Kalite-AR-GE)</option>
                                             <option value="@Role.HumanResources">Kullanıcı(İK)</option>
+                                            <option value="@Role.Accountant">Kullanıcı(MUH)</option>
+                                            <option value="@Role.WarehouseController">Yönetici(DEPO)</option>
+                                            <option value="@Role.WarehouseClient">Kullanıcı(DEPO)</option>
                                         </select>
                                     </div>
                                 </div>

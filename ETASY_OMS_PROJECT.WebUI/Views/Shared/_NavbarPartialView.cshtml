@@ -26,129 +26,210 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-shopping-cart"></i>
-                        <p>
-                            Sipariş İşlemleri
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Order" asp-action="Index" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Tüm Siparişler</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-controller="Order" asp-action="Delivered" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Sevk Edilenler</p>
-                            </a>
-                        </li>
-                        @if(User.FindFirstValue(ClaimTypes.Role) == Role.ExportUser.ToString() 
-                            || User.FindFirstValue(ClaimTypes.Role) == Role.DomesticUser.ToString())
-                        {
-                            <li class="nav-item">
-                                <a asp-controller="Order" asp-action="Create" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Yeni Sipariş</p>
-                                </a>
-                            </li>
-                        }                                               
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-building"></i>
-                        <p>
-                            Departman İşlemleri
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Department" asp-action="Index" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Tüm Departmanlar</p>
-                            </a>
-                        </li>
-                        @if (User.FindFirstValue(ClaimTypes.Role) == Role.HumanResources.ToString())
-                        {
-                            <li class="nav-item">
-                                <a asp-controller="Department" asp-action="Create" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Yeni Departman</p>
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tags"></i>
-                        <p>
-                            Ürün İşlemleri
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Product" asp-action="Index" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Tüm Ürünler</p>
-                            </a>
-                        </li>
-                        @if(User.FindFirstValue(ClaimTypes.Role) == Role.Quality.ToString())
-                        {
-                            <li class="nav-item">
-                                <a asp-controller="Product" asp-action="Create" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Yeni Ürün</p>
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            Müşteri İşlemleri
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a asp-controller="Customer" asp-action="Index" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Tüm Müşteriler</p>
-                            </a>
-                        </li>
-                        @if (User.FindFirstValue(ClaimTypes.Role) == Role.ExportUser.ToString()
-                        || User.FindFirstValue(ClaimTypes.Role) == Role.DomesticUser.ToString())
-                        {
-                            <li class="nav-item">
-                                <a asp-controller="Customer" asp-action="Create" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Yeni Müşteri</p>
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </li>
-                
-                @if(User.IsInRole("Admin"))
+                @if(!User.IsInRole("WarehouseController") && !User.IsInRole("WarehouseClient"))
                 {
-                    <li class="nav-header">SİSTEM</li>
                     <li class="nav-item">
-                        <a asp-controller="User" asp-action="Index" class="nav-link">
-                            <i class="nav-icon far fa-user-circle"></i>
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-shopping-cart"></i>
                             <p>
-                                Kullanıcılar
+                                Sipariş İşlemleri
+                                <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-controller="Order" asp-action="Index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tüm Siparişler</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Order" asp-action="Delivered" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Sevk Edilenler</p>
+                                </a>
+                            </li>
+                            @if (User.FindFirstValue(ClaimTypes.Role) == Role.ExportUser.ToString()
+                           || User.FindFirstValue(ClaimTypes.Role) == Role.DomesticUser.ToString())
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Order" asp-action="Create" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Yeni Sipariş</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-building"></i>
+                            <p>
+                                Departman İşlemleri
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-controller="Department" asp-action="Index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tüm Departmanlar</p>
+                                </a>
+                            </li>
+                            @if (User.FindFirstValue(ClaimTypes.Role) == Role.HumanResources.ToString())
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Department" asp-action="Create" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Yeni Departman</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tags"></i>
+                            <p>
+                                Ürün İşlemleri
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-controller="Product" asp-action="Index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tüm Ürünler</p>
+                                </a>
+                            </li>
+                            @if (User.FindFirstValue(ClaimTypes.Role) == Role.Quality.ToString())
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Product" asp-action="Create" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Yeni Ürün</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Müşteri İşlemleri
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-controller="Customer" asp-action="Index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tüm Müşteriler</p>
+                                </a>
+                            </li>
+                            @if (User.FindFirstValue(ClaimTypes.Role) == Role.ExportUser.ToString()
+                           || User.FindFirstValue(ClaimTypes.Role) == Role.DomesticUser.ToString())
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Customer" asp-action="Create" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Yeni Müşteri</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-header">SİSTEM</li>
+                        <li class="nav-item">
+                            <a asp-controller="User" asp-action="Index" class="nav-link">
+                                <i class="nav-icon far fa-user-circle"></i>
+                                <p>
+                                    Kullanıcılar
+                                </p>
+                            </a>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-archive"></i>
+                            <p>
+                                Depo İşlemleri
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-controller="Warehouse" asp-action="Index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tüm Depo Kayıtları</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Warehouse" asp-action="Create" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Yeni Depo Kaydı</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-barcode"></i>
+                            <p>
+                                Malzemeler
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-controller="Material" asp-action="Index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tüm Malzeme Kayıtları</p>
+                                </a>
+                            </li>
+                            @if(User.IsInRole("WarehouseController"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Material" asp-action="Create" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Yeni Malzeme Kaydı</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-people-arrows"></i>
+                            <p>
+                                Tedarikçiler
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-controller="Supplier" asp-action="Index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Tüm Tedarikçi Kayıtları</p>
+                                </a>
+                            </li>
+                            @if (User.IsInRole("WarehouseController"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Supplier" asp-action="Create" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Yeni Tedarikçi Kaydı</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
                     </li>
                 }
             </ul>

@@ -7,358 +7,376 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Tekrar hoşgeldiniz</h1>
+                <h1 class="m-0">Tekrar hoşgeldiniz, @User.Identity.Name</h1>
             </div>
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
-<!-- Main content -->
-<section class="content">
-    <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-            <div class="col-lg-4 col-6">
-                <!-- small box -->
-                <div class="small-box bg-info">
-                    <div class="inner">
-                        <h3>@Model.Orders.Count</h3>
-                        <p>Sipariş</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-6">
-                <!-- small box -->
-                <div class="small-box bg-warning">
-                    <div class="inner">
-                        <h3>@Model.Users.Count</h3>
-                        <p>Kullanıcı</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-person-add"></i>
-                    </div>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-4 col-6">
-                <!-- small box -->
-                <div class="small-box bg-danger">
-                    <div class="inner">
-                        <h3>@Model.Customers.Count</h3>
-                        <p>Müşteri</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-pie-graph"></i>
-                    </div>
-                </div>
-            </div>
-            <!-- ./col -->
-        </div>
-        <!-- /.row -->
-        <!-- Main row -->
-        <div class="row">
-            <!-- Left col -->
-            <section class="col-lg-12 connectedSortable">
-                <div class="row">
-                    <div class="col-md-4 col-sm-6 col-12">
-                        <div class="info-box bg-info">
-                            <span class="info-box-icon"><i class="fas fa-globe"></i></span>
 
-                            <div class="info-box-content">
-                                <span class="info-box-text">Dünya Geneli Sevkiyat</span>
-                                <span class="info-box-number">@Model.Orders.Where(_ => _.Status == Status.Delivered 
-                                    && _.Department.Name.ToLower() == "yurtdışı satış").Count()</span>
-                                @{
-                                    var prevMonthExportDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
+@if(User.FindFirstValue(ClaimTypes.Role) != Role.WarehouseController.ToString() || User.FindFirstValue(ClaimTypes.Role) != Role.WarehouseController.ToString())
+{
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-lg-4 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>@Model.Orders.Count</h3>
+                            <p>Sipariş</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3>@Model.Users.Count</h3>
+                            <p>Kullanıcı</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-4 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>@Model.Customers.Count</h3>
+                            <p>Müşteri</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./col -->
+            </div>
+            <!-- /.row -->
+            <!-- Main row -->
+            <div class="row">
+                <!-- Left col -->
+                <section class="col-lg-12 connectedSortable">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 col-12">
+                            <div class="info-box bg-info">
+                                <span class="info-box-icon"><i class="fas fa-globe"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Dünya Geneli Sevkiyat</span>
+                                    <span class="info-box-number">
+                                        @Model.Orders.Where(_ => _.Status == Status.Delivered
+                                                 && _.Department.Name.ToLower() == "yurtdışı satış").Count()
+                                    </span>
+                                    @{
+                                        var prevMonthExportDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
                                         && _.Department.Name.ToLower() == "yurtdışı satış" && _.DueDate.Month == DateTime.Now.Month - 1).Count();
-                                    var thisMonthExportDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
+                                        var thisMonthExportDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
                                         && _.Department.Name.ToLower() == "yurtdışı satış" && _.DueDate.Month == DateTime.Now.Month).Count();
 
-                                    var diff1 = thisMonthExportDeliveryCount - prevMonthExportDeliveryCount;
-                                    if (diff1 < 0)
-                                    {
-                                        var expDecrease = diff1 * prevMonthExportDeliveryCount / 100;
-                                        if(expDecrease > 0)
+                                        var diff1 = thisMonthExportDeliveryCount - prevMonthExportDeliveryCount;
+                                        if (diff1 < 0)
                                         {
-                                            <span class="progress-description">
-                                                Son 1 Ayda %@expDecrease düşüş
-                                            </span>
+                                            var expDecrease = diff1 * prevMonthExportDeliveryCount / 100;
+                                            if (expDecrease > 0)
+                                            {
+                                                <span class="progress-description">
+                                                    Son 1 Ayda %@expDecrease düşüş
+                                                </span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var expIncrease = diff1 * prevMonthExportDeliveryCount / 100;
+                                            if (expIncrease > 0)
+                                            {
+                                                <span class="progress-description">
+                                                    Son 1 Ayda %@expIncrease artış
+                                                </span>
+                                            }
                                         }
                                     }
-                                    else
-                                    {
-                                        var expIncrease = diff1 * prevMonthExportDeliveryCount / 100;
-                                        if(expIncrease > 0)
-                                        {
-                                            <span class="progress-description">
-                                                Son 1 Ayda %@expIncrease artış
-                                            </span>
-                                        }
-                                    }
-                                }
+                                </div>
+                                <!-- /.info-box-content -->
                             </div>
-                            <!-- /.info-box-content -->
+                            <!-- /.info-box -->
                         </div>
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-4 col-sm-6 col-12">
-                        <div class="info-box bg-success">
-                            <span class="info-box-icon"><i class="fas fa-home"></i></span>
+                        <!-- /.col -->
+                        <div class="col-md-4 col-sm-6 col-12">
+                            <div class="info-box bg-success">
+                                <span class="info-box-icon"><i class="fas fa-home"></i></span>
 
-                            <div class="info-box-content">
-                                <span class="info-box-text">Ülke Geneli Sevkiyat</span>
-                                <span class="info-box-number">
-                                    @Model.Orders.Where(_ => _.Status == Status.Delivered
-                                                                                          && _.Department.Name.ToLower() == "yurtiçi satış").Count()
-                                </span>
-                                @{
-                                    var prevMonthDomesticDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
-                                    && _.Department.Name.ToLower() == "yurtiçi satış" && _.DueDate.Month == DateTime.Now.Month - 1).Count();
-                                    var thisMonthDomesticDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
-                                    && _.Department.Name.ToLower() == "yurtiçi satış" && _.DueDate.Month == DateTime.Now.Month).Count();
-
-                                    var diff2 = thisMonthDomesticDeliveryCount - prevMonthDomesticDeliveryCount;
-                                    if (diff2 < 0)
-                                    {
-                                        var decrease = diff2 * prevMonthDomesticDeliveryCount / 100;
-                                        if (decrease > 0)
-                                        {
-                                            <div class="progress">
-                                                <div class="progress-bar" style="width: 70%"></div>
-                                            </div>
-                                            <span class="progress-description">
-                                                Son 1 Ayda %@decrease düşüş
-                                            </span>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        var increase = diff2 * prevMonthDomesticDeliveryCount / 100;
-                                        if (increase > 0)
-                                        {
-                                            <div class="progress">
-                                                <div class="progress-bar" style="width: 70%"></div>
-                                            </div>
-                                            <span class="progress-description">
-                                                Son 1 Ayda %@increase artış
-                                            </span>
-                                        }
-                                    }
-                                }
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-4 col-sm-6 col-12">
-                        <div class="info-box bg-warning">
-                            <span class="info-box-icon"><i class="fas fa-tags"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Ürün</span>
-                                <span class="info-box-number">@Model.Products.Count()</span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <!-- Widget: user widget style 1 -->
-                        @foreach(var item in Model.Users.Where(_ => _.Role == Role.DomesticUser).Take(1))
-                        {
-                            <div class="card card-widget widget-user">
-                                <!-- Add the bg color to the header using any of the bg-* classes -->
-                                <div class="widget-user-header bg-info">
-                                    <h3 class="widget-user-username">@item.Name</h3>
-                                    <h5 class="widget-user-desc">Yurtiçi Satış Koordinatörü</h5>
-                                </div>
-                                <div class="widget-user-image">
-                                    <img class="img-circle elevation-2" src="~/dist/img/avatars/@item.Avatar" alt="User Avatar">
-                                </div>
-                                <div class="card-footer">
-                                    <div class="row">
-                                        <div class="col-sm-4 border-right">
-                                            <div class="description-block">
-                                                <h5 class="description-header">@Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month && 
-                                                    _.Department.Name.ToLower() == "yurtiçi satış").Count()</h5>
-                                                <span class="description-text">AYLIK SİPARİŞ</span>
-                                            </div>
-                                            <!-- /.description-block -->
-                                        </div>
-                                        <div class="col-sm-4 border-right">
-                                            <div class="description-block">
-                                                @{
-                                                    var monthlyDomesticOrderCount = Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month &&
-                                                                _.Department.Name.ToLower() == "yurtiçi satış").Count();
-                                                    var yearlyDomesticOrderCount = Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
-                                                        _.Department.Name.ToLower() == "yurtiçi satış").Count();
-                                                    var averageDomesticOrderCount = 0;
-                                                    @if(averageDomesticOrderCount > 0)
-                                                    {
-                                                        averageDomesticOrderCount = yearlyDomesticOrderCount / monthlyDomesticOrderCount;                                                        
-                                                    }
-
-                                                }
-                                                <h5 class="description-header">@averageDomesticOrderCount</h5>
-                                                <span class="description-text">ORTALAMA</span>
-                                            </div>
-                                            <!-- /.description-block -->
-                                        </div>
-                                        <!-- /.col -->
-                                        <div class="col-sm-4">
-                                            <div class="description-block">
-                                                <h5 class="description-header">
-                                                    @Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
-                                                                                        _.Department.Name.ToLower() == "yurtiçi satış").Count()
-                                                </h5>
-                                                <span class="description-text">YILLIK SİPARİŞ</span>
-                                            </div>
-                                            <!-- /.description-block -->
-                                        </div>
-                                        <!-- /.col -->
-                                    </div>
-                                    <!-- /.row -->
-                                </div>
-                            </div>
-                        }
-
-                        <!-- /.widget-user -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-6">
-                        <!-- Widget: user widget style 1 -->
-                        @foreach(var item in Model.Users.Where(_ => _.Role == Role.ExportUser).Take(1))
-                        {
-                            <div class="card card-widget widget-user">
-                                <!-- Add the bg color to the header using any of the bg-* classes -->
-                                <div class="widget-user-header bg-info">
-                                    <h3 class="widget-user-username">@item.Name</h3>
-                                    <h5 class="widget-user-desc">Yurtdışı Satış Koordinatörü</h5>
-                                </div>
-                                <div class="widget-user-image">
-                                    <img class="img-circle elevation-2" src="~/dist/img/avatars/@item.Avatar" alt="User Avatar">
-                                </div>
-                                <div class="card-footer">
-                                    <div class="row">
-                                        <div class="col-sm-4 border-right">
-                                            <div class="description-block">
-                                                <h5 class="description-header">@Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month && 
-                                                    _.Department.Name.ToLower() == "yurtdışı satış").Count()</h5>
-                                                <span class="description-text">AYLIK SİPARİŞ</span>
-                                            </div>
-                                            <!-- /.description-block -->
-                                        </div>
-                                        <!-- /.col -->
-                                        <div class="col-sm-4 border-right">
-                                            <div class="description-block">
-                                                @{
-                                                    var monthlyExportOrderCount = Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month &&
-                                                                _.Department.Name.ToLower() == "yurtdışı satış").Count();
-                                                    var yearlyExportOrderCount = Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
-                                                        _.Department.Name.ToLower() == "yurtdışı satış").Count();
-                                                    var averageExportOrderCount = 0;
-                                                    if(monthlyExportOrderCount > 0)
-                                                    {
-                                                        averageExportOrderCount = yearlyExportOrderCount / monthlyExportOrderCount;                                                        
-                                                    }
-                                                }
-                                                <h5 class="description-header">@averageExportOrderCount</h5>
-                                                <span class="description-text">ORTALAMA</span>
-                                            </div>
-                                            <!-- /.description-block -->
-                                        </div>
-                                        <!-- /.col -->
-                                        <div class="col-sm-4">
-                                            <div class="description-block">
-                                                <h5 class="description-header">
-                                                    @Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
-                                                             _.Department.Name.ToLower() == "yurtdışı satış").Count()
-                                                </h5>
-                                                <span class="description-text">YILLIK SİPARİŞ</span>
-                                            </div>
-                                            <!-- /.description-block -->
-                                        </div>
-                                        <!-- /.col -->
-                                    </div>
-                                    <!-- /.row -->
-                                </div>
-                            </div>
-                        }
-                        
-                        <!-- /.widget-user -->
-                    </div>
-                    <!-- /.col -->
-                </div>
-                <!-- TO DO List -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="ion ion-clipboard mr-1"></i>
-                            Bekleyen Siparişler
-                        </h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        @if(Model.Orders.Where(_ => _.Status != Status.Delivered).Count() > 0)
-                        {
-                            <ul class="todo-list" data-widget="todo-list">
-                                @foreach(var item in Model.Orders.Where(_ => _.Status != Status.Delivered && _.Status != Status.Rejected))
-                                {
-                                    <li>
-                                        <!-- drag handle -->
-                                        <span class="handle">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </span>                                        
-                                        <!-- todo text -->
-                                        <span class="text">@item.FormId / @item.Customer.Name / @item.Customer.Address</span>
-                                        <!-- Emphasis label -->
-                                        @if(item.Status == Status.Prepared)
-                                        {
-                                            <small class="badge badge-secondary">
-                                                <i class="far fa-clock"></i> Hazır
-                                            </small>
-                                        }
-                                        else if (item.Status == Status.Approved)
-                                        {
-                                            <small class="badge badge-primary">
-                                                <i class="far fa-clock"></i> Onaylandı
-                                            </small>
-                                        }
-                                        <!-- General tools such as edit or delete-->
-                                        <div class="tools">
-                                            <a asp-controller="OrderDetail" asp-action="Detail" asp-route-id="@item.Id">
-                                                <i class="fas fa-info"></i>
-                                            </a>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
-                        }
-                        else {
-                            <ul class="todo-list" data-widget="todo-list">
-                                <li>
-                                    <span class="handle">
-                                        Henüz bekleyen siparişiniz yok.
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Ülke Geneli Sevkiyat</span>
+                                    <span class="info-box-number">
+                                        @Model.Orders.Where(_ => _.Status == Status.Delivered
+                                                 && _.Department.Name.ToLower() == "yurtiçi satış").Count()
                                     </span>
-                                </li>
-                            </ul>
-                        }
-                        
+                                    @{
+                                        var prevMonthDomesticDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
+                                        && _.Department.Name.ToLower() == "yurtiçi satış" && _.DueDate.Month == DateTime.Now.Month - 1).Count();
+                                        var thisMonthDomesticDeliveryCount = Model.Orders.Where(_ => _.Status == Status.Delivered
+                                        && _.Department.Name.ToLower() == "yurtiçi satış" && _.DueDate.Month == DateTime.Now.Month).Count();
+
+                                        var diff2 = thisMonthDomesticDeliveryCount - prevMonthDomesticDeliveryCount;
+                                        if (diff2 < 0)
+                                        {
+                                            var decrease = diff2 * prevMonthDomesticDeliveryCount / 100;
+                                            if (decrease > 0)
+                                            {
+                                                <div class="progress">
+                                                    <div class="progress-bar" style="width: 70%"></div>
+                                                </div>
+                                                <span class="progress-description">
+                                                    Son 1 Ayda %@decrease düşüş
+                                                </span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var increase = diff2 * prevMonthDomesticDeliveryCount / 100;
+                                            if (increase > 0)
+                                            {
+                                                <div class="progress">
+                                                    <div class="progress-bar" style="width: 70%"></div>
+                                                </div>
+                                                <span class="progress-description">
+                                                    Son 1 Ayda %@increase artış
+                                                </span>
+                                            }
+                                        }
+                                    }
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-4 col-sm-6 col-12">
+                            <div class="info-box bg-warning">
+                                <span class="info-box-icon"><i class="fas fa-tags"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Ürün</span>
+                                    <span class="info-box-number">@Model.Products.Count()</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
                     </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-            </section>
-        </div>
-        <!-- /.row (main row) -->
-    </div><!-- /.container-fluid -->
-</section>
-<!-- /.content -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- Widget: user widget style 1 -->
+                            @foreach (var item in Model.Users.Where(_ => _.Role == Role.DomesticUser).Take(1))
+                            {
+                                <div class="card card-widget widget-user">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    <div class="widget-user-header bg-info">
+                                        <h3 class="widget-user-username">@item.Name</h3>
+                                        <h5 class="widget-user-desc">Yurtiçi Satış Koordinatörü</h5>
+                                    </div>
+                                    <div class="widget-user-image">
+                                        <img class="img-circle elevation-2" src="~/dist/img/avatars/@item.Avatar" alt="User Avatar">
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <div class="col-sm-4 border-right">
+                                                <div class="description-block">
+                                                    <h5 class="description-header">
+                                                        @Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month &&
+                                                                 _.Department.Name.ToLower() == "yurtiçi satış").Count()
+                                                    </h5>
+                                                    <span class="description-text">AYLIK SİPARİŞ</span>
+                                                </div>
+                                                <!-- /.description-block -->
+                                            </div>
+                                            <div class="col-sm-4 border-right">
+                                                <div class="description-block">
+                                                    @{
+                                                        var monthlyDomesticOrderCount = Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month &&
+                                                        _.Department.Name.ToLower() == "yurtiçi satış").Count();
+                                                        var yearlyDomesticOrderCount = Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
+                                                        _.Department.Name.ToLower() == "yurtiçi satış").Count();
+                                                        var averageDomesticOrderCount = 0;
+                                                        @if (averageDomesticOrderCount > 0)
+                                                        {
+                                                            averageDomesticOrderCount = yearlyDomesticOrderCount / monthlyDomesticOrderCount;
+                                                        }
+
+                                                    }
+                                                    <h5 class="description-header">@averageDomesticOrderCount</h5>
+                                                    <span class="description-text">ORTALAMA</span>
+                                                </div>
+                                                <!-- /.description-block -->
+                                            </div>
+                                            <!-- /.col -->
+                                            <div class="col-sm-4">
+                                                <div class="description-block">
+                                                    <h5 class="description-header">
+                                                        @Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
+                                                                 _.Department.Name.ToLower() == "yurtiçi satış").Count()
+                                                    </h5>
+                                                    <span class="description-text">YILLIK SİPARİŞ</span>
+                                                </div>
+                                                <!-- /.description-block -->
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+                                        <!-- /.row -->
+                                    </div>
+                                </div>
+                            }
+
+                            <!-- /.widget-user -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                            <!-- Widget: user widget style 1 -->
+                            @foreach (var item in Model.Users.Where(_ => _.Role == Role.ExportUser).Take(1))
+                            {
+                                <div class="card card-widget widget-user">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    <div class="widget-user-header bg-info">
+                                        <h3 class="widget-user-username">@item.Name</h3>
+                                        <h5 class="widget-user-desc">Yurtdışı Satış Koordinatörü</h5>
+                                    </div>
+                                    <div class="widget-user-image">
+                                        <img class="img-circle elevation-2" src="~/dist/img/avatars/@item.Avatar" alt="User Avatar">
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <div class="col-sm-4 border-right">
+                                                <div class="description-block">
+                                                    <h5 class="description-header">
+                                                        @Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month &&
+                                                                 _.Department.Name.ToLower() == "yurtdışı satış").Count()
+                                                    </h5>
+                                                    <span class="description-text">AYLIK SİPARİŞ</span>
+                                                </div>
+                                                <!-- /.description-block -->
+                                            </div>
+                                            <!-- /.col -->
+                                            <div class="col-sm-4 border-right">
+                                                <div class="description-block">
+                                                    @{
+                                                        var monthlyExportOrderCount = Model.Orders.Where(_ => _.CreatedAt.Month == DateTime.Now.Month &&
+                                                        _.Department.Name.ToLower() == "yurtdışı satış").Count();
+                                                        var yearlyExportOrderCount = Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
+                                                        _.Department.Name.ToLower() == "yurtdışı satış").Count();
+                                                        var averageExportOrderCount = 0;
+                                                        if (monthlyExportOrderCount > 0)
+                                                        {
+                                                            averageExportOrderCount = yearlyExportOrderCount / monthlyExportOrderCount;
+                                                        }
+                                                    }
+                                                    <h5 class="description-header">@averageExportOrderCount</h5>
+                                                    <span class="description-text">ORTALAMA</span>
+                                                </div>
+                                                <!-- /.description-block -->
+                                            </div>
+                                            <!-- /.col -->
+                                            <div class="col-sm-4">
+                                                <div class="description-block">
+                                                    <h5 class="description-header">
+                                                        @Model.Orders.Where(_ => _.CreatedAt.Year == DateTime.Now.Year &&
+                                                                 _.Department.Name.ToLower() == "yurtdışı satış").Count()
+                                                    </h5>
+                                                    <span class="description-text">YILLIK SİPARİŞ</span>
+                                                </div>
+                                                <!-- /.description-block -->
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+                                        <!-- /.row -->
+                                    </div>
+                                </div>
+                            }
+
+                            <!-- /.widget-user -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- TO DO List -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="ion ion-clipboard mr-1"></i>
+                                Bekleyen Siparişler
+                            </h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            @if (Model.Orders.Where(_ => _.Status != Status.Delivered).Count() > 0)
+                            {
+                                <ul class="todo-list" data-widget="todo-list">
+                                    @foreach (var item in Model.Orders.Where(_ => _.Status != Status.Delivered && _.Status != Status.Rejected))
+                                    {
+                                        <li>
+                                            <!-- drag handle -->
+                                            <span class="handle">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </span>
+                                            <!-- todo text -->
+                                            <span class="text">@item.FormId / @item.Customer.Name / @item.Customer.Address</span>
+                                            <!-- Emphasis label -->
+                                            @if (item.Status == Status.Prepared)
+                                            {
+                                                <small class="badge badge-secondary">
+                                                    <i class="far fa-clock"></i> Hazır
+                                                </small>
+                                            }
+                                            else if (item.Status == Status.Approved)
+                                            {
+                                                <small class="badge badge-primary">
+                                                    <i class="far fa-clock"></i> Onaylandı
+                                                </small>
+                                            }
+                                            <!-- General tools such as edit or delete-->
+                                            <div class="tools">
+                                                <a asp-controller="OrderDetail" asp-action="Detail" asp-route-id="@item.Id">
+                                                    <i class="fas fa-info"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul class="todo-list" data-widget="todo-list">
+                                    <li>
+                                        <span class="handle">
+                                            Henüz bekleyen siparişiniz yok.
+                                        </span>
+                                    </li>
+                                </ul>
+                            }
+
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </section>
+            </div>
+            <!-- /.row (main row) -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+}
+else
+{
+    
+}
+
+
+

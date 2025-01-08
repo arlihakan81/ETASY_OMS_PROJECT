@@ -23,12 +23,15 @@ builder.Services.AddScoped<IOrderDetailDal, OrderDetailDal>();
 builder.Services.AddScoped<INotificationDal, NotificationDal>();
 builder.Services.AddScoped<IDepartmentDal, DepartmentDal>();
 builder.Services.AddScoped<INotifyUserDal, NotifyUserDal>();
+builder.Services.AddScoped<ISupplierDal, SupplierDal>();
+builder.Services.AddScoped<IMaterialDal, MaterialDal>();
+builder.Services.AddScoped<IWarehouseDal, WarehouseDal>();
 
 builder.Services.AddScoped<IGenericRepository<EntityBase>, GenericRepository<EntityBase>>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(ops =>
     {
-        ops.Cookie.Name = "ETASY_OMS_Cookie_Auth";
+        ops.Cookie.Name = "www.csetasy.com";
         ops.LoginPath = "/Account/Login";
         ops.LogoutPath = "/Account/Logout";
         ops.AccessDeniedPath = "/Account/AccessDenied";

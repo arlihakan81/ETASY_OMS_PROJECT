@@ -8,6 +8,9 @@
         DomesticUser = 3,
         Admin = 4,
         Quality = 5,
-        HumanResources = 6
+        HumanResources = 6,
+        WarehouseController = 7,
+        WarehouseClient = 8,
+        Accountant = 9
     }
 }
