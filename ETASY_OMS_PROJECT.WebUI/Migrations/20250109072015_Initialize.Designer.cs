@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ETASY_OMS_PROJECT.WebUI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250108210747_Initialize")]
+    [Migration("20250109072015_Initialize")]
     partial class Initialize
     {
         /// <inheritdoc />
@@ -166,6 +166,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
 
                     b.Property<Guid>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly>("DueDate")
                         .HasColumnType("date");

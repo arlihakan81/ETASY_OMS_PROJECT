@@ -1,0 +1,101 @@
+﻿@model OrderDetailsModel
+@{
+    ViewData["title"] = "Siparişlerimiz";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
+                    <li class="breadcrumb-item active">@ViewData["title"]</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <p>
+                            <a asp-controller="Order" asp-action="Index" class="btn btn-warning btn-sm">
+                                <i class="fa fa-list"></i> Listeye Geri Dön
+                            </a>
+                        </p>
+                        @if (Model.Orders.Any(_ => _.Status != Status.Delivered))
+                        {
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>FN</th>
+                                        <th>Müşteri</th>
+                                        <th>Ürün</th>
+                                        <th>Adet</th>
+                                        <th>Tarih</th>
+                                        <th>Termin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Orders)
+                                    {
+                                        foreach(var item2 in Model.OrderDetails.Where(_ => _.OrderId == item.Id))
+                                        {
+                                            <tr>
+                                                <td>@item.FormId</td>
+                                                <td>@item.Customer.Name</td>
+                                                <td>@item2.Product.Name</td>
+                                                <td>@item2.Quantity</td>
+                                                <td>@item.CreatedAt.ToShortDateString()</td>
+                                                @if(item.DueDate.Year != DateTime.Now.Year)
+                                                {
+                                                    <td class="text-center">-</td>
+                                                }
+                                                else 
+                                                {
+                                                    <td>@item.DueDate.ToShortDateString()</td>
+                                                }
+                                            </tr>
+                                        }
+                                        
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>FN</th>
+                                        <th>Müşteri</th>
+                                        <th>Ürün</th>
+                                        <th>Adet</th>
+                                        <th>Tarih</th>
+                                        <th>Termin</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Henüz bekleyen siparişiniz yok</span>
+                            </div>
+                        }
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->

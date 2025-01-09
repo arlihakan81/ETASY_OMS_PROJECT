@@ -132,6 +132,12 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             return View(_detail.GetDetailOrderDetailModel(id));
         }
 
+        [HttpGet]
+        public IActionResult AllDetails()
+        {
+            return View(_detail.GetOrderDetailsModel());
+        }
+
         [Authorize(Roles = "ExportUser,DomesticUser")]
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id) // OrderDetail.Id

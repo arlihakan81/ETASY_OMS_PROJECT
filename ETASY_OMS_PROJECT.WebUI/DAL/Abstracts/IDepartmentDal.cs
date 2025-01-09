@@ -5,5 +5,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Abstracts
 {
     public interface IDepartmentDal : IGenericRepository<Department>
     {
+        Task<bool> CheckDepartmentNameAsync(string name);
+        Task<bool> CheckDepartmentNameAsync(Guid id, string name);
     }
 }

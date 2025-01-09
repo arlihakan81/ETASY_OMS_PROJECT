@@ -93,7 +93,8 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FormId = table.Column<int>(type: "int", nullable: false),
+                    FormId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     DueDate = table.Column<DateOnly>(type: "date", nullable: false),

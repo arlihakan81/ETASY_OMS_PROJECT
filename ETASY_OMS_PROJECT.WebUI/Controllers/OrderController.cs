@@ -12,13 +12,15 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderDal _order;
+        private readonly IOrderDetailDal _detail;
         private readonly INotificationDal _notification;
         private readonly INotifyUserDal _notifyUser;
         private readonly IAccountDal _account;
 
-        public OrderController(IOrderDal order, INotificationDal notification, INotifyUserDal notifyUser, IAccountDal account)
+        public OrderController(IOrderDal order, IOrderDetailDal detail, INotificationDal notification, INotifyUserDal notifyUser, IAccountDal account)
         {
             _order = order;
+            _detail = detail;
             _notification = notification;
             _notifyUser = notifyUser;
             _account = account;
@@ -54,6 +56,7 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                     var order = new Order
                     {
                         FormId = model.Order.FormId,
+                        Description = model.Order.Description,
                         CustomerId = model.Order.CustomerId,
                         DueDate = model.Order.DueDate,
                         Status = model.Order.Status,
@@ -110,15 +113,25 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ord = _order.Get(id);
-                ord.FormId = model.Order.FormId;
-                ord.CustomerId = model.Order.CustomerId;
-                ord.DueDate = model.Order.DueDate;
-                ord.Status = model.Order.Status;
-                ord.DepartmentId = new Guid(User.FindFirstValue("DepartmentId"));
-                ord.CreatedAt = model.Order.CreatedAt;
-                ord.UpdatedAt = DateTime.Now;
-                await _order.UpdateAsync(ord);
+                var order = _order.Get(id);
+                order.FormId = model.Order.FormId;
+                order.Description = model.Order.Description;
+                order.CustomerId = model.Order.CustomerId;
+                order.DueDate = model.Order.DueDate;
+                order.Status = model.Order.Status;
+                order.DepartmentId = new Guid(User.FindFirstValue("DepartmentId"));
+                order.CreatedAt = model.Order.CreatedAt;
+                order.UpdatedAt = DateTime.Now;
+                await _order.UpdateAsync(order);
+
+                var detail = _detail.GetByOrderId(order.Id);
+                detail.OrderId = order.Id;
+                detail.ProductId = detail.ProductId;
+                detail.Quantity = detail.Quantity;
+                detail.CreatedAt = detail.CreatedAt;
+                detail.UpdatedAt = detail.UpdatedAt;
+                await _detail.UpdateAsync(detail);
+
                 var notification = new Notification
                 {
                     Operation = Operation.Order_Update,

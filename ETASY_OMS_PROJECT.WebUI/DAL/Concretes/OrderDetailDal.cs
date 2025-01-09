@@ -29,6 +29,12 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
                 .Include(_ => _.Product).ToListAsync();
         }
 
+        public OrderDetail GetByOrderId(Guid id)
+        {
+            return _context.OrderDetails.Include(_ => _.Product).Include(_ => _.Order)
+                .FirstOrDefault(_ => _.OrderId == id);
+        }
+
         public CreateOrderDetailModel GetCreateOrderDetailModel(Guid id) // Order.Id
         {
             return new CreateOrderDetailModel
@@ -50,6 +56,15 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
                 .ThenInclude(_ => _.Customer).Where(_ => _.OrderId == id).ToList(),
                 Order = _context.Orders.Include(_ => _.Customer).Include(_ => _.Department)
                 .Where(_ => _.Id == id).FirstOrDefault()
+            };
+        }
+
+        public OrderDetailsModel GetOrderDetailsModel()
+        {
+            return new OrderDetailsModel
+            {
+                OrderDetails = _context.OrderDetails.Include(_ => _.Order).Include(_ => _.Product).ToList(),
+                Orders = _context.Orders.Include(_ => _.Customer).Include(_ => _.Department).ToList()
             };
         }
 

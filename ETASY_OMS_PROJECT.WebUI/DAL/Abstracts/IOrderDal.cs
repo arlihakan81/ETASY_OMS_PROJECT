@@ -6,8 +6,8 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Abstracts
 {
     public interface IOrderDal : IGenericRepository<Order>
     {
-        Task<bool> CheckFormIdAsync(int formId);
-        Task<bool> CheckFormIdAsync(Guid id, int formId);
+        Task<bool> CheckFormIdAsync(string formId);
+        Task<bool> CheckFormIdAsync(Guid id, string formId);
         CreateOrderModel GetCreateOrderModel();
         UpdateOrderModel GetUpdateOrderModel(Guid id);
         DetailOrderModel GetDetailOrderModel(Guid id);

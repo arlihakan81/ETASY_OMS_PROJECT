@@ -7,19 +7,18 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Tekrar hoşgeldiniz, @User.Identity.Name</h1>
+                <h1 class="m-0">Tekrar hoşgeldiniz</h1>
             </div>
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
-
-@if(User.FindFirstValue(ClaimTypes.Role) != Role.WarehouseController.ToString() || User.FindFirstValue(ClaimTypes.Role) != Role.WarehouseController.ToString())
-{
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            <!-- Small boxes (Stat box) -->
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        @if(!User.IsInRole("WarehouseController") || User.IsInRole("WarehouseClient"))
+        {
             <div class="row">
                 <div class="col-lg-4 col-6">
                     <!-- small box -->
@@ -327,7 +326,7 @@
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </span>
                                             <!-- todo text -->
-                                            <span class="text">@item.FormId / @item.Customer.Name / @item.Customer.Address</span>
+                                            <span class="text">@item.FormId / @item.Customer.Name</span>
                                             <!-- Emphasis label -->
                                             @if (item.Status == Status.Prepared)
                                             {
@@ -343,8 +342,8 @@
                                             }
                                             <!-- General tools such as edit or delete-->
                                             <div class="tools">
-                                                <a asp-controller="OrderDetail" asp-action="Detail" asp-route-id="@item.Id">
-                                                    <i class="fas fa-info"></i>
+                                                <a asp-controller="Order" asp-action="UpdateAsDelivered" asp-route-id="@item.Id">
+                                                    <i class="fas fa-truck"></i>
                                                 </a>
                                             </div>
                                         </li>
@@ -369,14 +368,55 @@
                 </section>
             </div>
             <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-}
-else
-{
-    
-}
+        }
+        else 
+        {
+            <div class="row">
+                <div class="col-lg-4 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>@Model.Warehouses.Count</h3>
+                            <p>Depo Kayıt</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3>@Model.Users.Where(_ => _.Department.Name == "Depo").Count()</h3>
+                            <p>Kullanıcı</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-4 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>@Model.Suppliers.Count</h3>
+                            <p>Tedarikçi</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-people-arrows"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./col -->
+            </div>
+            <!-- /.row -->
+        }
+        
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
 
 
 

@@ -28,13 +28,13 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes
                 .Include(_ => _.Department).FirstOrDefault();
         }
 
-        public async Task<bool> CheckFormIdAsync(int formId)
+        public async Task<bool> CheckFormIdAsync(string formId)
         {
             return await _context.Orders.Include(_ => _.Customer)
                 .Include(_ => _.Department).AnyAsync(_ => _.FormId == formId);
         }
 
-        public async Task<bool> CheckFormIdAsync(Guid id, int formId)
+        public async Task<bool> CheckFormIdAsync(Guid id, string formId)
         {
             return await _context.Orders.Include(_ => _.Customer)
                 .Include(_ => _.Department).Where(_ => _.Id != id)

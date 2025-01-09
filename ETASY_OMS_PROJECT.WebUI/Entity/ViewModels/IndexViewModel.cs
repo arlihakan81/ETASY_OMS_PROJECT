@@ -13,5 +13,8 @@ namespace ETASY_OMS_PROJECT.WebUI.Entity.ViewModels
         public List<OrderDetail> OrderDetails { get; set; }
         public Export Export { get; set; }
         public Domestic Domestic { get; set; }
+        public List<Material> Materials { get; set; }
+        public List<Warehouse> Warehouses { get; set; }
+        public List<Supplier> Suppliers { get; set; }
     }
 }

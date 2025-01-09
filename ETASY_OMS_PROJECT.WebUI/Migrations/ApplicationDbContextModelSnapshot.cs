@@ -164,6 +164,9 @@ namespace ETASY_OMS_PROJECT.WebUI.Migrations
                     b.Property<Guid>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateOnly>("DueDate")
                         .HasColumnType("date");
 

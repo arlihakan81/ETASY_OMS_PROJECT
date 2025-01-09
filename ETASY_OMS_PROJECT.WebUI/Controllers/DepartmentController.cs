@@ -32,12 +32,20 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Department model)
         {
-            await _department.AddAsync(new Department
+            if(!await _department.CheckDepartmentNameAsync(model.Name))
             {
-                Name = model.Name,
-                CreatedAt = DateTime.Now
-            });
-            return RedirectToAction("Create");
+                await _department.AddAsync(new Department
+                {
+                    Name = model.Name,
+                    CreatedAt = DateTime.Now
+                });
+                return RedirectToAction("Create");
+            }
+            else
+            {
+                TempData["error"] = "Gerekli alanları girin";
+                return View(model);
+            }
         }
 
         [Authorize(Roles = "HumanResources")]
@@ -51,12 +59,20 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(Guid id, Department model)
         {
-            var dep = _department.Get(id);
-            dep.Name = model.Name;
-            dep.CreatedAt = model.CreatedAt;
-            dep.UpdatedAt = DateTime.Now;
-            await _department.UpdateAsync(dep);
-            return RedirectToAction("Update", "Department", new {id});
+            if(!await _department.CheckDepartmentNameAsync(id, model.Name))
+            {
+                var dep = _department.Get(id);
+                dep.Name = model.Name;
+                dep.CreatedAt = model.CreatedAt;
+                dep.UpdatedAt = DateTime.Now;
+                await _department.UpdateAsync(dep);
+                return RedirectToAction("Update", "Department", new { id });
+            }
+            else
+            {
+                TempData["error"] = "Gerekli alanları girin";
+                return View(model);
+            }
         }
 
         [Authorize(Roles = "HumanResources")]

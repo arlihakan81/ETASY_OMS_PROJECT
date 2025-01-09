@@ -9,5 +9,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Abstracts
         CreateOrderDetailModel GetCreateOrderDetailModel(Guid id);
         UpdateOrderDetailModel GetUpdateOrderDetailModel(Guid id);
         DetailOrderDetailModel GetDetailOrderDetailModel(Guid id);
+        OrderDetailsModel GetOrderDetailsModel();
+        OrderDetail GetByOrderId(Guid id);
     }
 }
