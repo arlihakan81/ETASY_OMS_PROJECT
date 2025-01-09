@@ -28,5 +28,30 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
             await _notifyUser.UpdateAsync(notify);
             return RedirectToAction("Index", "NotifyUser");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ReadAll()
+        {
+            foreach (var notify in await _notifyUser.GetAllAsync())
+            {
+                notify.IsRead = true;
+                await _notifyUser.UpdateAsync(notify);
+            }
+            return RedirectToAction("Index", "NotifyUser");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteAll()
+        {
+            foreach (var notify in await _notifyUser.GetAllAsync())
+            {
+                if(notify.User.Name == User.Identity.Name)
+                {
+                    await _notifyUser.DeleteAsync(notify.Id);
+                }
+            }
+            return RedirectToAction("Index", "NotifyUser");
+        }
+
     }
 }

@@ -1,7 +1,8 @@
-﻿@model List<Customer>
+﻿@model List<Group>
 @{
-    ViewData["title"] = "Müşterilerimiz";
+    ViewData["title"] = "Gelir & Giderler";
 }
+
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -27,8 +28,7 @@
                     <div class="card-body">
                         <p>
                             <a asp-action="Create" class="btn btn-secondary btn-sm">
-                                <i class="fas fa-plus"></i>
-                                Yeni
+                                <i class="fas fa-plus"></i> Yeni
                             </a>
                         </p>
                         @if (Model.Count > 0)
@@ -36,8 +36,11 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Müşteri Adı</th>
-                                        <th>Adresi</th>
+                                        <th>Kod</th>
+                                        <th>Adı</th>
+                                        <th>Gelir/Gider</th>
+                                        <th>Tutar</th>
+                                        <th>Aylık/Yıllık</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -45,13 +48,28 @@
                                     @foreach (var item in Model)
                                     {
                                         <tr>
+                                            <td>@item.Code</td>
                                             <td>@item.Name</td>
-                                            <td>@item.Address</td>
+                                            @if(item.IsExpense == true)
+                                            {
+                                                <td class="text-danger">Gider</td>
+                                            }
+                                            else {
+                                                <td class="text-success">Gelir</td>
+                                            }
+                                            @if (item.IsMonthly == true)
+                                            {
+                                                <td class="text-success">₺/Ay</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="text-success">₺/Yıl</td>
+                                            }
                                             <td>
                                                 <a class="btn btn-warning btn-sm" asp-action="Update" asp-route-id="@item.Id">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">
+                                                <a class="btn btn-warning btn-sm" asp-action="Delete" asp-route-id="@item.Id">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -60,8 +78,11 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Müşteri Adı</th>
-                                        <th>Adresi</th>
+                                        <th>Kod</th>
+                                        <th>Adı</th>
+                                        <th>Gelir/Gider</th>
+                                        <th>Tutar</th>
+                                        <th>Aylık/Yıllık</th>
                                         <th></th>
                                     </tr>
                                 </tfoot>
@@ -70,8 +91,8 @@
                         else
                         {
                             <div class="alert alert-danger">
-                                <i class="fas fa-close"></i>
-                                <span>Henüz kayıtlı hiçbir müşteriniz yok</span>
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Henüz kayıtlı hiçbir gelir & gider yok!</span>
                             </div>
                         }
 

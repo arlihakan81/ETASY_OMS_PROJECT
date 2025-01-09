@@ -26,6 +26,7 @@ builder.Services.AddScoped<INotifyUserDal, NotifyUserDal>();
 builder.Services.AddScoped<ISupplierDal, SupplierDal>();
 builder.Services.AddScoped<IMaterialDal, MaterialDal>();
 builder.Services.AddScoped<IWarehouseDal, WarehouseDal>();
+builder.Services.AddScoped<IGroupDal, GroupDal>();
 
 builder.Services.AddScoped<IGenericRepository<EntityBase>, GenericRepository<EntityBase>>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

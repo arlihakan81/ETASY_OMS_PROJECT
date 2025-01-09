@@ -17,7 +17,36 @@
 <section class="content">
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
-        @if(!User.IsInRole("WarehouseController") || User.IsInRole("WarehouseClient"))
+        @if(User.IsInRole("HumanResources"))
+        {
+            <div class="row">
+                <div class="col-lg-6 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>@Model.Groups.Where(_ => _.IsExpense == false).Sum(_ => _.Amount)</h3>
+                            <p>Gelir</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-lira-sign"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3>@Model.Groups.Where(_ => _.IsExpense == true).Sum(_ => _.Amount)</h3>
+                            <p>Gider</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-lira-sign"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else if(!User.IsInRole("WarehouseController") && !User.IsInRole("WarehouseClient"))
         {
             <div class="row">
                 <div class="col-lg-4 col-6">

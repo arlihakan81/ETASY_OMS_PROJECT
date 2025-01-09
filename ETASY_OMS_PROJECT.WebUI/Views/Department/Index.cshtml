@@ -51,13 +51,10 @@
                                             <td>@item.Name</td>
                                             <td>@item.CreatedAt.ToShortDateString()</td>
                                             <td>
-                                                @if (User.FindFirstValue(ClaimTypes.Role) == Role.HumanResources.ToString())
+                                                @if (User.IsInRole("HumanResources"))
                                                 {
                                                     <a class="btn btn-warning btn-sm" asp-action="Update" asp-route-id="@item.Id">
                                                         <i class="fas fa-edit"></i>
-                                                    </a>
-                                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">
-                                                        <i class="fas fa-trash"></i>
                                                     </a>
                                                 }
                                             </td>

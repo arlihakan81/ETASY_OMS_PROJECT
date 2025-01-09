@@ -25,6 +25,14 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
+                        <p>
+                            <a asp-action="ReadAll" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-book"></i> Tüm bildirimleri okundu olarak işaretle
+                            </a>
+                            <a asp-action="DeleteAll" class="btn btn-danger btn-sm">
+                                <i class="fas fa-book"></i> Tüm bildirimleri sil
+                            </a>
+                        </p>                        
                         @if (Model.Any(_ => _.User.Name == User.Identity.Name))
                         {
                             <table id="example1" class="table table-bordered table-striped">

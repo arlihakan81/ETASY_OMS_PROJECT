@@ -27,6 +27,7 @@ namespace ETASY_OMS_PROJECT.WebUI.DAL.Concretes.Data
         public DbSet<Material> Materials { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<WarehouseMaterial> WarehouseMaterials { get; set; }
+        public DbSet<Group> Groups { get; set; }
 
     }
 }

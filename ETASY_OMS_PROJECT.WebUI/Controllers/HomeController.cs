@@ -28,7 +28,8 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 OrderDetails = _context.OrderDetails.Include(_ => _.Product).Include(_ => _.Order).ToList(),
                 Materials = _context.Materials.ToList(),
                 Suppliers = _context.Suppliers.ToList(),
-                Warehouses = _context.Warehouses.Include(_ => _.Supplier).ToList()
+                Warehouses = _context.Warehouses.Include(_ => _.Supplier).ToList(),
+                Groups = _context.Groups.ToList()
             });
         }
 

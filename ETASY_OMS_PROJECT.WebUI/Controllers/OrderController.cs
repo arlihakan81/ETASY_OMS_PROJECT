@@ -12,15 +12,13 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderDal _order;
-        private readonly IOrderDetailDal _detail;
         private readonly INotificationDal _notification;
         private readonly INotifyUserDal _notifyUser;
         private readonly IAccountDal _account;
 
-        public OrderController(IOrderDal order, IOrderDetailDal detail, INotificationDal notification, INotifyUserDal notifyUser, IAccountDal account)
+        public OrderController(IOrderDal order, INotificationDal notification, INotifyUserDal notifyUser, IAccountDal account)
         {
             _order = order;
-            _detail = detail;
             _notification = notification;
             _notifyUser = notifyUser;
             _account = account;
@@ -123,14 +121,6 @@ namespace ETASY_OMS_PROJECT.WebUI.Controllers
                 order.CreatedAt = model.Order.CreatedAt;
                 order.UpdatedAt = DateTime.Now;
                 await _order.UpdateAsync(order);
-
-                var detail = _detail.GetByOrderId(order.Id);
-                detail.OrderId = order.Id;
-                detail.ProductId = detail.ProductId;
-                detail.Quantity = detail.Quantity;
-                detail.CreatedAt = detail.CreatedAt;
-                detail.UpdatedAt = detail.UpdatedAt;
-                await _detail.UpdateAsync(detail);
 
                 var notification = new Notification
                 {
